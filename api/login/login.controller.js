@@ -1,4 +1,4 @@
-const { login } = require("./login.service")
+const { login,runSqlQuery } = require("./login.service")
 const { encrypt, decrypt } = require("../../enc_dec")
 const sign = require("jwt-encode")
 module.exports = {
@@ -31,6 +31,29 @@ module.exports = {
             return res.status(500).json({
                 success: false,
                 message: "Error while encrypting data"
+            })
+        }
+    },
+    runSqlQuery: (req, res) => {
+        try {
+            runSqlQuery((err, result) => {
+                if (err) {
+                    return res.status(500).json({
+                        success: false,
+                        message: err
+                    })
+                }
+                else {
+                    return res.status(200).json({
+                        status: true,
+                        message: "Success"
+                    })
+                }
+            })
+        } catch (error) {
+            return res.status(400).json({
+                success: false,
+                message: "Bad Request"
             })
         }
     },

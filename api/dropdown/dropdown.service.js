@@ -52,7 +52,7 @@ module.exports = {
     },
     getDropdownById: (id, callback) => {
         pool.query(
-            "SELECT `id` , `name`,`groupId` FROM `dropdown` WHERE `deleted` = ? and `id` = ?",
+            "SELECT `id` , `name` FROM `dropdown` WHERE `deleted` = ? and `id` = ?",
             [
                 process.env.NOTDELETED,
                 id
@@ -62,7 +62,7 @@ module.exports = {
             }
         )
     },
-    getAllDropdown: (queryData, callback) => {
+    getAllDropdown: (callback) => {
         pool.query(
             "SELECT `id` , `name`,`groupId` FROM `dropdown` WHERE `deleted` = ?",
             [
@@ -75,7 +75,10 @@ module.exports = {
     },
     getAllDropdownGroup: (callback) => {
         pool.query(
-            "SELECT  FROM `dropdownGroup`",
+            "SELECT `name` FROM `dropdownGroup` WHERE `deleted` = ?",
+            [
+                process.env.NOTDELETED
+            ],
             (error, result) => {
                 if (error)
                     return callback(error?.sqlMessage || "Error while fetching a dropdown")

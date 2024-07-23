@@ -26,9 +26,7 @@ module.exports = {
     updateDropdown: (req, res) => {
         const id = decrypt(req?.params?.id)
         const body = req?.body
-        body.updt_by = decrypt(body?.updt_by)
-        body.status = decrypt(body?.status)
-        if (id && body?.updt_by && body?.status) {
+        if (id) {
             try {
                 updateDropdown(body, id, (err, result) => {
                     if (err) {
@@ -61,8 +59,7 @@ module.exports = {
     deleteDropdown: (req, res) => {
         const id = decrypt(req?.params?.id)
         const body = req?.body
-        body.updt_by = decrypt(body?.updt_by)
-        if (id && body?.updt_by) {
+        if (id) {
             try {
                 deleteDropdown(body, id, (err, result) => {
                     if (err) {
@@ -93,9 +90,9 @@ module.exports = {
         }
     },
     getAllDropdownByGroup: (req, res) => {
-        const group_name = req?.params?.group_name
-        if (group_name) {
-            getAllDropdownByGroup(group_name, (error, result) => {
+        const groupId = req?.params?.groupId
+        if (groupId) {
+            getAllDropdownByGroup(groupId, (error, result) => {
                 if (error) {
                     return res.status(500).json({
                         success: false,
@@ -103,12 +100,10 @@ module.exports = {
                     })
                 }
                 else {
-                    result.map(item => {
-                        item.id = encrypt(item?.id)
-                    })
+                    result = result.map(item => ({ ...item, id: encrypt(item?.id) }))
                     return res.status(200).json({
                         status: true,
-                        message: result?.length > 0 ? "Data Found" : "No Data Found",
+                        message: result?.length ? "Data Found" : "No Data Found",
                         result: result
                     })
                 }
@@ -132,14 +127,11 @@ module.exports = {
                     })
                 }
                 else {
-                    result.map(item => {
-                        item.id = encrypt(item?.id)
-                        item.status = encrypt(item?.status)
-                    })
+                    result = result.map(item => ({ ...item, id: encrypt(item?.id) }))
                     return res.status(200).json({
                         status: true,
-                        message: result?.length > 0 ? "Data Found" : "No Data Found",
-                        result: result?.length > 0 ? result[0] : result
+                        message: result?.length ? "Data Found" : "No Data Found",
+                        result: result?.length ? result?.[0] : result
                     })
                 }
             })
@@ -152,8 +144,7 @@ module.exports = {
         }
     },
     getAllDropdown: (req, res) => {
-        const queryData = req?.query
-        getAllDropdown(queryData, (error, result) => {
+        getAllDropdown((error, result) => {
             if (error) {
                 return res.status(500).json({
                     success: false,
@@ -161,15 +152,11 @@ module.exports = {
                 })
             }
             else {
-                result?.data?.map(item => {
-                    item.id = encrypt(item?.id)
-                    item.group_name = item.group_name = (item?.group_name || '').replaceAll('_', ' ').replace(/\b\w/g, x => x.toUpperCase());
-                })
+                result = result.map(item => ({ ...item, id: encrypt(item?.id) }))
                 return res.status(200).json({
                     status: true,
-                    message: result?.data?.length > 0 ? "Data Found" : "No Data Found",
-                    result: result?.data,
-                    total: result?.total
+                    message: result?.length ? "Data Found" : "No Data Found",
+                    result: result
                 })
             }
         })
@@ -183,13 +170,9 @@ module.exports = {
                 })
             }
             else {
-                result.map(item => {
-                    item.id = item?.group_name
-                    item.group_name = item.group_name = (item?.group_name || '').replaceAll('_', ' ').replace(/\b\w/g, x => x.toUpperCase());
-                })
                 return res.status(200).json({
                     status: true,
-                    message: result?.length > 0 ? "Data Found" : "No Data Found",
+                    message: result?.length ? "Data Found" : "No Data Found",
                     result: result
                 })
             }
