@@ -1,0 +1,50 @@
+const joi = require("@hapi/joi")
+const schema = {
+    createStudent: joi.object({
+        orgId: joi.string().required(),
+        firstname: joi.string().required(),
+        middelname: joi.string().required(),
+        lastname: joi.string().required(),
+        email: joi.string().email().required(),
+        password: joi.string().required(),
+        mobile: joi.number().required(),
+        address: joi.string().required(),
+        gender: joi.string().required(),
+        dob: joi.date().required(),
+        categoryId: joi.string().required(),
+        fatherName: joi.string().required(),
+        rollNumber: joi.string().required(),
+        fatherMobile: joi.number(),
+        motherName: joi.string(),
+        motherMobile: joi.number(),
+        parentEmail: joi.string().email(),
+        hostel: joi.string(),
+        guardianName: joi.string(),
+        guardianMobile: joi.number(),
+        roomNumber: joi.number()
+    }),
+    updateStudent: joi.object({
+        orgId: joi.string().required(),
+        firstname: joi.string().required(),
+        middelname: joi.string().required(),
+        lastname: joi.string().required(),
+        email: joi.string().email().required(),
+        password: joi.string().required(),
+        mobile: joi.number().required(),
+        address: joi.string().required(),
+        gender: joi.string().required(),
+        dob: joi.date().required(),
+        categoryId: joi.string().required(),
+        fatherName: joi.string().required(),
+        rollNumber: joi.string().required(),
+        fatherMobile: joi.number(),
+        motherName: joi.string(),
+        motherMobile: joi.number(),
+        parentEmail: joi.string().email(),
+        hostel: joi.string(),
+        guardianName: joi.string(),
+        guardianMobile: joi.number(),
+        roomNumber: joi.number()
+    })
+}
+module.exports = schema

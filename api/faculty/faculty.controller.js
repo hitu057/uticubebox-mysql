@@ -1,0 +1,136 @@
+const { createFaculty, updateFaculty, getAllFaculty, deleteFaculty, getFacultyById } = require("./faculty.service")
+const { encrypt, decrypt } = require("../../enc_dec")
+module.exports = {
+    createFaculty: (req, res) => {
+        const body = req?.body
+        try {
+            createFaculty(body, (err, result) => {
+                if (err) {
+                    return res.status(500).json({
+                        success: false,
+                        message: err
+                    })
+                }
+                return res.status(200).json({
+                    status: true,
+                    message: "Faculty Added Successfully"
+                })
+            })
+        } catch (error) {
+            return res.status(400).json({
+                success: false,
+                message: "Bad Request"
+            })
+        }
+    },
+    updateFaculty: (req, res) => {
+        const id = decrypt(req?.params?.id)
+        const body = req?.body
+        if (id) {
+            try {
+                updateFaculty(body, id, (err, result) => {
+                    if (err) {
+                        return res.status(500).json({
+                            success: false,
+                            message: err
+                        })
+                    }
+                    else {
+                        return res.status(200).json({
+                            status: true,
+                            message: "Faculty Updated Successfully"
+                        })
+                    }
+                })
+            } catch (error) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Bad Request"
+                })
+            }
+        }
+        else {
+            return res.status(400).json({
+                success: false,
+                message: "Bad Request"
+            })
+        }
+    },
+    deleteFaculty: (req, res) => {
+        const id = decrypt(req?.params?.id)
+        if (id) {
+            try {
+                deleteFaculty(id, (err, result) => {
+                    if (err) {
+                        return res.status(500).json({
+                            success: false,
+                            message: err
+                        })
+                    }
+                    else {
+                        return res.status(200).json({
+                            status: true,
+                            message: "Faculty Deleted Successfully"
+                        })
+                    }
+                })
+            } catch (error) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Bad Request"
+                })
+            }
+        }
+        else {
+            return res.status(400).json({
+                success: false,
+                message: "Bad Request"
+            })
+        }
+    },
+    getFacultyById: (req, res) => {
+        const id = decrypt(req?.params?.id)
+        if (id) {
+            getFacultyById(id, (error, result) => {
+                if (error) {
+                    return res.status(500).json({
+                        success: false,
+                        message: error
+                    })
+                }
+                else {
+                    result = result.map(item => ({ ...item, id: encrypt(item?.id) }))
+                    return res.status(200).json({
+                        status: true,
+                        message: result?.length ? "Data Found" : "No Data Found",
+                        result: result?.length ? result?.[0] : result
+                    })
+                }
+            })
+        }
+        else {
+            return res.status(400).json({
+                success: false,
+                message: "Bad Request"
+            })
+        }
+    },
+    getAllFaculty: (req, res) => {
+        getAllFaculty((error, result) => {
+            if (error) {
+                return res.status(500).json({
+                    success: false,
+                    message: error
+                })
+            }
+            else {
+                result = result.map(item => ({ ...item, id: encrypt(item?.id) }))
+                return res.status(200).json({
+                    status: true,
+                    message: result?.length ? "Data Found" : "No Data Found",
+                    result: result
+                })
+            }
+        })
+    }
+}

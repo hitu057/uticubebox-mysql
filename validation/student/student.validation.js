@@ -1,9 +1,9 @@
-const { createDropdown, updateDropdown } = require("./dropdown.schema")
+const { createStudent, updateStudent } = require("./student.schema")
 
 module.exports = {
-    createDropdownValidation: (req, res, next) => {
+    createStudentValidation: (req, res, next) => {
         try {
-            const value = createDropdown.validate(req?.body)
+            const value = createStudent.validate(req?.body)
             if (value?.error) {
                 res.status(400).json({
                     success: false,
@@ -20,9 +20,9 @@ module.exports = {
             })
         }
     },
-    updateDropdownValidation: (req, res, next) => {
+    updateStudentValidation: (req, res, next) => {
         try {
-            const value = updateDropdown.validate(req?.body)
+            const value = updateStudent.validate(req?.body)
             if (value?.error) {
                 res.status(400).json({
                     success: false,
