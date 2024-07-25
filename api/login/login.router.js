@@ -1,9 +1,9 @@
-const { login, encryptData, decryptData, runSqlQuery } = require("./login.controller")
+const { login, encryptData, decryptData,organisation } = require("./login.controller")
 const router = require("express").Router()
 const { loginValidation } = require("../../validation/login/login.validation")
 
 router.post("/", loginValidation, login)
-router.post("/runQuery", runSqlQuery)
+router.get("/organisation", organisation)
 router.get("/enc/:id", encryptData)
 router.get("/dec/:id", decryptData)
 

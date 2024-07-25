@@ -4,6 +4,9 @@ module.exports = {
     createDropdown: (req, res) => {
         const body = req?.body
         try {
+            body.groupId = decrypt(body?.groupId)
+            body.orgId = decrypt(body?.orgId)
+            body.crdtBy = decrypt(body?.crdtBy)
             createDropdown(body, (err, result) => {
                 if (err) {
                     return res.status(500).json({
@@ -28,6 +31,9 @@ module.exports = {
         const body = req?.body
         if (id) {
             try {
+                body.groupId = decrypt(body?.groupId)
+                body.orgId = decrypt(body?.orgId)
+                body.crdtBy = decrypt(body?.crdtBy)
                 updateDropdown(body, id, (err, result) => {
                     if (err) {
                         return res.status(500).json({
@@ -61,6 +67,7 @@ module.exports = {
         const body = req?.body
         if (id) {
             try {
+                body.crdtBy = decrypt(body?.crdtBy)
                 deleteDropdown(body, id, (err, result) => {
                     if (err) {
                         return res.status(500).json({
@@ -90,8 +97,9 @@ module.exports = {
         }
     },
     getAllDropdownByGroup: (req, res) => {
-        const groupId = req?.params?.groupId
+        let groupId = req?.params?.groupId
         if (groupId) {
+            groupId = decrypt(groupId)
             getAllDropdownByGroup(groupId, (error, result) => {
                 if (error) {
                     return res.status(500).json({
@@ -170,6 +178,7 @@ module.exports = {
                 })
             }
             else {
+                result = result.map(item => ({ ...item, id: encrypt(item?.id) }))
                 return res.status(200).json({
                     status: true,
                     message: result?.length ? "Data Found" : "No Data Found",

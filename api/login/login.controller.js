@@ -1,4 +1,4 @@
-const { login,runSqlQuery } = require("./login.service")
+const { login, organisation } = require("./login.service")
 const { encrypt, decrypt } = require("../../enc_dec")
 const sign = require("jwt-encode")
 module.exports = {
@@ -34,9 +34,9 @@ module.exports = {
             })
         }
     },
-    runSqlQuery: (req, res) => {
+    organisation: (req, res) => {
         try {
-            runSqlQuery((err, result) => {
+            organisation((err, result) => {
                 if (err) {
                     return res.status(500).json({
                         success: false,
@@ -46,7 +46,8 @@ module.exports = {
                 else {
                     return res.status(200).json({
                         status: true,
-                        message: "Success"
+                        message: "Organisation Data",
+                        result : result
                     })
                 }
             })
@@ -75,6 +76,7 @@ module.exports = {
                         delete data.sid
                         delete data.fid
                         data.id = encrypt(data?.id)
+                        data.orgId = encrypt(data?.orgId)
                         data.loginAt = new Date()
                         return res.status(200).json({
                             status: true,

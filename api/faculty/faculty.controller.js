@@ -4,6 +4,13 @@ module.exports = {
     createFaculty: (req, res) => {
         const body = req?.body
         try {
+            body.orgId = decrypt(body?.orgId)
+            body.gender = decrypt(body?.gender)
+            body.departmentId = decrypt(body?.departmentId)
+            body.designationId = decrypt(body?.designationId)
+            body.qualificationId = decrypt(body?.qualificationId)
+            body.roleId = decrypt(body?.roleId)
+            body.additionalResId = body?.additionalResId ? decrypt(body?.additionalResId) : null
             body.password = encrypt(body?.password)
             createFaculty(body, (err, result) => {
                 if (err) {

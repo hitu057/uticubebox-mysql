@@ -3,10 +3,12 @@ const pool = require("../../config/database")
 module.exports = {
     createDropdown: (data, callback) => {
         pool.query(
-            "INSERT INTO `dropdown` (`name`,`groupId`) VALUES (?,?)",
+            "INSERT INTO `dropdown` (`orgId`,`name`,`groupId`,`crdtBy`) VALUES (?,?,?,?)",
             [
+                data?.orgId,
                 data?.name,
-                data?.groupId
+                data?.groupId,
+                data?.crdtBy
             ],
             (error, result) => {
                 return error ? callback(error?.sqlMessage || "Error while adding a dropdown") : callback(null, result)
@@ -15,10 +17,11 @@ module.exports = {
     },
     updateDropdown: (data, id, callback) => {
         pool.query(
-            "UPDATE `dropdown` SET `name` = ?, `groupId` = ? WHERE `id` = ?",
+            "UPDATE `dropdown` SET `name` = ?, `groupId` = ? , `updtBy` = ? WHERE `id` = ?",
             [
                 data?.name,
                 data?.groupId,
+                data?.crdtBy,
                 id
             ],
             (error, result) => {
@@ -28,9 +31,10 @@ module.exports = {
     },
     deleteDropdown: (data, id, callback) => {
         pool.query(
-            "UPDATE `dropdown` SET `deleted` = ? WHERE `id` = ?",
+            "UPDATE `dropdown` SET `deleted` = ?,`updtBy` = ? WHERE `id` = ?",
             [
                 process.env.DELETED,
+                data?.crdtBy,
                 id
             ],
             (error, result) => {
@@ -64,7 +68,7 @@ module.exports = {
     },
     getAllDropdown: (callback) => {
         pool.query(
-            "SELECT `id` , `name`,`groupId` FROM `dropdown` WHERE `deleted` = ?",
+            "SELECT d.`id` , d.`name`,dg.`name` AS groupName FROM `dropdown` d LEFT JOIN `dropdownGroup` dg ON dg.`id` = d.`groupId` WHERE d.`deleted` = ?",
             [
                 process.env.NOTDELETED
             ],
@@ -75,7 +79,7 @@ module.exports = {
     },
     getAllDropdownGroup: (callback) => {
         pool.query(
-            "SELECT `name` FROM `dropdownGroup` WHERE `deleted` = ?",
+            "SELECT `id`,`name` FROM `dropdownGroup` WHERE `deleted` = ?",
             [
                 process.env.NOTDELETED
             ],
