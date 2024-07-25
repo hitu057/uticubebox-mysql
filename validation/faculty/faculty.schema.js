@@ -15,7 +15,7 @@ const schema = {
         designationId: joi.string().required(),
         empId: joi.string().required(),
         qualificationId: joi.string().required(),
-        additionalResId: joi.string(),
+        additionalResId: joi.string().allow('').allow(null),
         roleId: joi.string().required()
     }),
     updateFaculty: joi.object({
@@ -33,7 +33,7 @@ const schema = {
         designationId: joi.string().required(),
         empId: joi.string().required(),
         qualificationId: joi.string().required(),
-        additionalResId: joi.string(),
+        additionalResId: joi.string().allow('').allow(null),
         roleId: joi.string().required()
     })
 }
