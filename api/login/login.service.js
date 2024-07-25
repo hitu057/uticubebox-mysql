@@ -16,11 +16,10 @@ module.exports = {
     },
     login: (data, callback) => {
         pool.query(
-            "SELECT `id`,`firstname`,`lastname`,`email`,`contact` FROM `teams` WHERE `email` =? and `password` =? and `status` =? and `deleted` =? LIMIT 1",
+            "SELECT u.`id`,u.`firstname`,u.`middelname`,u.`lastname`,u.`email`,u.`mobile`,u.`profile`,f.`id` AS fid , s.`id` AS sid,d.`name` AS role FROM `user` u LEFT JOIN `faculty` f ON f.`userId` = u.`id` LEFT JOIN `student` s ON s.`userId` = f.`id` LEFT JOIN `dropdown` d ON d.`id` = f.`roleId` WHERE u.`email` =? and u.`password` =? and u.`deleted` =? LIMIT 1",
             [
                 data?.email,
                 data?.password,
-                process.env.ACTIVE,
                 process.env.NOTDELETED,
             ],
             (error, result) => {

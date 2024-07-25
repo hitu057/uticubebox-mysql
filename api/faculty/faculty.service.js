@@ -18,6 +18,7 @@ module.exports = {
             ],
             (error, result) => {
                 if (error) {
+                    console.log(error)
                     return callback(error?.sqlMessage || "Error while adding a faculty")
                 } else {
                     if (result?.insertId) {

@@ -4,6 +4,7 @@ module.exports = {
     createStudent: (req, res) => {
         const body = req?.body
         try {
+            body.password = encrypt(body?.password)
             createStudent(body, (err, result) => {
                 if (err) {
                     return res.status(500).json({

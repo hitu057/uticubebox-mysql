@@ -71,7 +71,11 @@ module.exports = {
                 else {
                     if (result?.length) {
                         const data = result?.[0]
+                        data.type = data?.fid > 0 ? 'Faculty' : 'Student'
+                        delete data.sid
+                        delete data.fid
                         data.id = encrypt(data?.id)
+                        data.loginAt = new Date()
                         return res.status(200).json({
                             status: true,
                             message: "Login Successful",
