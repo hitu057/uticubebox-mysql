@@ -44,6 +44,7 @@ module.exports = {
                     })
                 }
                 else {
+                    result = result.map(item => ({ ...item, id: encrypt(item?.id) }))
                     return res.status(200).json({
                         status: true,
                         message: "Organisation Data",
@@ -61,6 +62,7 @@ module.exports = {
     login: (req, res) => {
         const body = req?.body
         try {
+            body.orgId = decrypt(body?.orgId)
             body.password = encrypt(body?.password)
             login(body, (err, result) => {
                 if (err) {
@@ -89,8 +91,7 @@ module.exports = {
                     else {
                         return res.status(400).json({
                             status: false,
-                            message: "Invalid email OR password",
-                            token: ""
+                            message: "Invalid email OR password"
                         })
                     }
                 }

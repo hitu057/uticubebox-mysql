@@ -36,6 +36,13 @@ module.exports = {
         const body = req?.body
         if (id) {
             try {
+                body.gender = decrypt(body?.gender)
+                body.departmentId = decrypt(body?.departmentId)
+                body.designationId = decrypt(body?.designationId)
+                body.qualificationId = decrypt(body?.qualificationId)
+                body.roleId = decrypt(body?.roleId)
+                body.additionalResId = body?.additionalResId ? decrypt(body?.additionalResId) : null
+                body.password = body?.password ? encrypt(body?.password) : ""
                 updateFaculty(body, id, (err, result) => {
                     if (err) {
                         return res.status(500).json({

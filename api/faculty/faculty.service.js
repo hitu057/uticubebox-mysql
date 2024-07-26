@@ -18,7 +18,6 @@ module.exports = {
             ],
             (error, result) => {
                 if (error) {
-                    console.log(error)
                     return callback(error?.sqlMessage || "Error while adding a faculty")
                 } else {
                     if (result?.insertId) {
@@ -44,14 +43,39 @@ module.exports = {
     },
     updateFaculty: (data, id, callback) => {
         pool.query(
-            "UPDATE `faculty` SET `name` = ?, `groupId` = ? WHERE `id` = ?",
+            `UPDATE user SET firstname = ?, middelname = ?, lastname = ?,email = ? ,${data?.password ? 'password = ?,' : ''} mobile = ?, address =?, gender =?, dob =? WHERE id = ?`,
             [
-                data?.name,
-                data?.groupId,
+                data?.firstname,
+                data?.middelname,
+                data?.lastname,
+                data?.email,
+                ...(data?.password ? [data?.password] : []),
+                data?.mobile,
+                data?.address,
+                data?.gender,
+                data?.dob,
                 id
             ],
             (error, result) => {
-                return error ? callback(error?.sqlMessage || "Error while updating a faculty") : callback(null, result)
+                if (error) {
+                    return callback(error?.sqlMessage || "Error while updating a faculty")
+                } else {
+                    pool.query(
+                        "UPDATE `faculty` SET `departmentId` = ?,`designationId` = ?,`empId` =? ,`qualificationId` =?,`additionalResId` =?,`roleId` =? WHERE userId = ?",
+                        [
+                            data?.departmentId,
+                            data?.designationId,
+                            data?.empId,
+                            data?.qualificationId,
+                            data?.additionalResId,
+                            data?.roleId,
+                            id
+                        ],
+                        (error, response) => {
+                            return error ? callback(error?.sqlMessage || "Error while updating a faculty") : callback(null, response)
+                        }
+                    )
+                }
             }
         )
     },
@@ -69,7 +93,7 @@ module.exports = {
     },
     getFacultyById: (id, callback) => {
         pool.query(
-            "SELECT `id` , `name` FROM `faculty` WHERE `deleted` = ? and `id` = ?",
+            "SELECT u.`id` , u.`firstname`,u.`middelname`,u.`lastname`,u.`email`,u.`mobile`,u.`address`,u.`gender`,u.`dob`,f.`departmentId`,f.`designationId`,f.`empId`,f.`qualificationId`,f.`additionalResId`,f.`roleId` FROM `user` u LEFT JOIN `faculty` f ON f.`userId` = u.`id` WHERE u.`deleted` = ? and u.`id` = ?",
             [
                 process.env.NOTDELETED,
                 id
@@ -81,7 +105,7 @@ module.exports = {
     },
     getAllFaculty: (callback) => {
         pool.query(
-            "SELECT `id` , `name`,`groupId` FROM `faculty` WHERE `deleted` = ?",
+            "SELECT `id`,`firstname`,`middelname`,`lastname`,`email`,`mobile` FROM `user` WHERE `deleted` = ?",
             [
                 process.env.NOTDELETED
             ],
