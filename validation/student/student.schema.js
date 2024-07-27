@@ -21,7 +21,8 @@ const schema = {
         hostel: joi.string().allow('').allow(null),
         guardianName: joi.string().allow('').allow(null),
         guardianMobile: joi.number().allow('').allow(null),
-        roomNumber: joi.number().allow('').allow(null)
+        roomNumber: joi.number().allow('').allow(null),
+        batchId: joi.string().required()
     }),
     updateStudent: joi.object({
         orgId: joi.string().required(),
@@ -44,7 +45,8 @@ const schema = {
         hostel: joi.string().allow('').allow(null),
         guardianName: joi.string().allow('').allow(null),
         guardianMobile: joi.number().allow('').allow(null),
-        roomNumber: joi.number().allow('').allow(null)
+        roomNumber: joi.number().allow('').allow(null),
+        batchId: joi.string().required()
     })
 }
 module.exports = schema

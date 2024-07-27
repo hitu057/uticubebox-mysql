@@ -37,8 +37,22 @@ module.exports = {
                                 data?.guardianMobile,
                                 data?.roomNumber
                             ],
-                            (error, response) => {
-                                return error ? callback(error?.sqlMessage || "Error while adding a student") : callback(null, response)
+                            (err, response) => {
+                                if (error) {
+                                    return callback(err?.sqlMessage || "Error while adding a student")
+                                } else {
+                                    if (response?.insertId) {
+                                        pool.query(
+                                            "INSERT INTO `batch` (`userId`,`batchId`) VALUES (?,?)",
+                                            [
+                                                result?.insertId,
+                                                data?.batchId
+                                            ],
+                                            (er, res) => {
+                                                return er ? callback(er?.sqlMessage || "Error while adding a student") : callback(null, res)
+                                            })
+                                    }
+                                }
                             }
                         )
                     }
@@ -105,7 +119,7 @@ module.exports = {
     },
     getStudentById: (id, callback) => {
         pool.query(
-           "SELECT u.`id` , u.`firstname`,u.`middelname`,u.`lastname`,u.`email`,u.`mobile`,u.`address`,u.`gender`,u.`dob`,s.`categoryId`,s.`fatherName`,s.`rollNumber`,s.`fatherMobile`,s.`motherName`,s.`motherMobile`,s.`parentEmail`,s.`hostel`,s.`guardianName`,s.`guardianMobile`,s.`roomNumber` FROM `user` u LEFT JOIN `student` s ON s.`userId` = u.`id` WHERE u.`deleted` = ? and u.`id` = ?",
+            "SELECT u.`id` , u.`firstname`,u.`middelname`,u.`lastname`,u.`email`,u.`mobile`,u.`address`,u.`gender`,u.`dob`,s.`categoryId`,s.`fatherName`,s.`rollNumber`,s.`fatherMobile`,s.`motherName`,s.`motherMobile`,s.`parentEmail`,s.`hostel`,s.`guardianName`,s.`guardianMobile`,s.`roomNumber` FROM `user` u LEFT JOIN `student` s ON s.`userId` = u.`id` WHERE u.`deleted` = ? and u.`id` = ?",
             [
                 process.env.NOTDELETED,
                 id
@@ -117,7 +131,7 @@ module.exports = {
     },
     getAllStudent: (callback) => {
         pool.query(
-           "SELECT u.`id`,u.`firstname`,u.`middelname`,u.`lastname`,u.`email`,u.`mobile` FROM `user` AS u RIGHT JOIN `student` AS s ON s.`userId` = u.`id` WHERE `deleted` = ?",
+            "SELECT u.`id`,u.`firstname`,u.`middelname`,u.`lastname`,u.`email`,u.`mobile` FROM `user` AS u RIGHT JOIN `student` AS s ON s.`userId` = u.`id` WHERE `deleted` = ?",
             [
                 process.env.NOTDELETED
             ],

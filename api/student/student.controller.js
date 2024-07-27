@@ -8,6 +8,7 @@ module.exports = {
             body.crdtBy = decrypt(body?.crdtBy)
             body.gender = decrypt(body?.gender)
             body.categoryId = decrypt(body?.categoryId)
+            body.batchId = decrypt(body?.batchId)
             body.password = encrypt(body?.password)
             createStudent(body, (err, result) => {
                 if (err) {
