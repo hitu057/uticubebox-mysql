@@ -93,6 +93,18 @@ module.exports = {
             }
         )
     },
+    uploadImage: (data,id, callback) => {
+        pool.query(
+            "UPDATE `user` SET `profile` = ? WHERE `id` = ?",
+            [
+                data?.profile,
+                id
+            ],
+            (error, result) => {
+                return error ? callback(error?.sqlMessage || "Error while deleting a faculty") : callback(null, result)
+            }
+        )
+    },
     getFacultyById: (id, callback) => {
         pool.query(
             "SELECT u.`id` , u.`firstname`,u.`middelname`,u.`lastname`,u.`email`,u.`mobile`,u.`address`,u.`gender`,u.`dob`,f.`departmentId`,f.`designationId`,f.`empId`,f.`qualificationId`,f.`additionalResId`,f.`roleId` FROM `user` u LEFT JOIN `faculty` f ON f.`userId` = u.`id` WHERE u.`deleted` = ? and u.`id` = ?",
@@ -115,5 +127,6 @@ module.exports = {
                 return error ? callback(error?.sqlMessage || "Error while fetching a faculty") : callback(null, result)
             }
         )
-    }
+    },
+
 }

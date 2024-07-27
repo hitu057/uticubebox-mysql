@@ -117,6 +117,18 @@ module.exports = {
             }
         )
     },
+    uploadImage: (data,id, callback) => {
+        pool.query(
+            "UPDATE `user` SET `profile` = ? WHERE `id` = ?",
+            [
+                data?.profile,
+                id
+            ],
+            (error, result) => {
+                return error ? callback(error?.sqlMessage || "Error while deleting a faculty") : callback(null, result)
+            }
+        )
+    },
     getStudentById: (id, callback) => {
         pool.query(
             "SELECT u.`id` , u.`firstname`,u.`middelname`,u.`lastname`,u.`email`,u.`mobile`,u.`address`,u.`gender`,u.`dob`,s.`categoryId`,s.`fatherName`,s.`rollNumber`,s.`fatherMobile`,s.`motherName`,s.`motherMobile`,s.`parentEmail`,s.`hostel`,s.`guardianName`,s.`guardianMobile`,s.`roomNumber` FROM `user` u LEFT JOIN `student` s ON s.`userId` = u.`id` WHERE u.`deleted` = ? and u.`id` = ?",

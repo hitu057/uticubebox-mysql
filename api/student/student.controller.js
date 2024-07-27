@@ -1,4 +1,4 @@
-const { createStudent, updateStudent, getAllStudent, deleteStudent, getStudentById } = require("./student.service")
+const { createStudent, updateStudent, getAllStudent, deleteStudent, getStudentById,uploadImage } = require("./student.service")
 const { encrypt, decrypt } = require("../../enc_dec")
 module.exports = {
     createStudent: (req, res) => {
@@ -145,5 +145,31 @@ module.exports = {
                 })
             }
         })
+    },
+    uploadImage: (req, res) => {
+        const id = decrypt(req?.params?.id)
+        const body = req?.body
+        body.profile = req?.file?.filename
+        try {
+            uploadImage(body,id, (err, result) => {
+                if (err) {
+                    return res.status(500).json({
+                        success: false,
+                        message: err
+                    })
+                }
+                else {
+                    return res.status(200).json({
+                        status: true,
+                        message: "Faculty image uploaded sucessfully"
+                    })
+                }
+            })
+        } catch (error) {
+            return res.status(400).json({
+                success: false,
+                message: "Bad Request"
+            })
+        }
     }
 }

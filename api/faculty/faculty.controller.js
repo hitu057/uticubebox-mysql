@@ -1,4 +1,4 @@
-const { createFaculty, updateFaculty, getAllFaculty, deleteFaculty, getFacultyById } = require("./faculty.service")
+const { createFaculty, updateFaculty, getAllFaculty, deleteFaculty, getFacultyById, uploadImage } = require("./faculty.service")
 const { encrypt, decrypt } = require("../../enc_dec")
 module.exports = {
     createFaculty: (req, res) => {
@@ -79,7 +79,7 @@ module.exports = {
         if (id) {
             try {
                 body.updtBy = decrypt(body?.crdtBy)
-                deleteFaculty(data,id, (err, result) => {
+                deleteFaculty(data, id, (err, result) => {
                     if (err) {
                         return res.status(500).json({
                             success: false,
@@ -151,5 +151,31 @@ module.exports = {
                 })
             }
         })
+    },
+    uploadImage: (req, res) => {
+        const id = decrypt(req?.params?.id)
+        const body = req?.body
+        body.profile = req?.file?.filename
+        try {
+            uploadImage(body,id, (err, result) => {
+                if (err) {
+                    return res.status(500).json({
+                        success: false,
+                        message: err
+                    })
+                }
+                else {
+                    return res.status(200).json({
+                        status: true,
+                        message: "Faculty image uploaded sucessfully"
+                    })
+                }
+            })
+        } catch (error) {
+            return res.status(400).json({
+                success: false,
+                message: "Bad Request"
+            })
+        }
     }
 }
