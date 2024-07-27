@@ -6,6 +6,7 @@ app.use(express.json())
 app.use(cors({
     origin: '*'
 }))
+app.use('/uploads', express.static('uploads'))
 app.use("/login", require("./api/login/login.router"))
 app.use("/dropdown", require("./api/dropdown/dropdown.router"))
 app.use("/faculty", require("./api/faculty/faculty.router"))
