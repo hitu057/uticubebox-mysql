@@ -14,7 +14,7 @@ module.exports = {
                 data?.address,
                 data?.gender,
                 data?.dob,
-                1
+                data?.crdtBy
             ],
             (error, result) => {
                 if (error) {
@@ -48,22 +48,54 @@ module.exports = {
     },
     updateStudent: (data, id, callback) => {
         pool.query(
-            "UPDATE `student` SET `name` = ?, `groupId` = ? WHERE `id` = ?",
+            `UPDATE user SET firstname = ?, middelname = ?, lastname = ?,email = ? ,${data?.password ? 'password = ?,' : ''} mobile = ?, address =?, gender =?, dob =?,updtBy = ? WHERE id = ?`,
             [
-                data?.name,
-                data?.groupId,
+                data?.firstname,
+                data?.middelname,
+                data?.lastname,
+                data?.email,
+                ...(data?.password ? [data?.password] : []),
+                data?.mobile,
+                data?.address,
+                data?.gender,
+                data?.dob,
+                data?.updtBy,
                 id
             ],
             (error, result) => {
-                return error ? callback(error?.sqlMessage || "Error while updating a student") : callback(null, result)
+                if (error) {
+                    return callback(error?.sqlMessage || "Error while updating a student")
+                } else {
+                    pool.query(
+                        "UPDATE `student` SET `categoryId` = ?,`fatherName` = ?,`rollNumber` = ?,`fatherMobile` = ?,`motherName` = ?,`motherMobile` = ?,`parentEmail` = ?,`hostel` = ?,`guardianName` = ?,`guardianMobile` = ?,`roomNumber` = ? WHERE userId = ?",
+                        [
+                            data?.categoryId,
+                            data?.fatherName,
+                            data?.rollNumber,
+                            data?.fatherMobile,
+                            data?.motherName,
+                            data?.motherMobile,
+                            data?.parentEmail,
+                            data?.hostel,
+                            data?.guardianName,
+                            data?.guardianMobile,
+                            data?.roomNumber,
+                            id
+                        ],
+                        (error, response) => {
+                            return error ? callback(error?.sqlMessage || "Error while updating a student") : callback(null, response)
+                        }
+                    )
+                }
             }
         )
     },
-    deleteStudent: (id, callback) => {
+    deleteStudent: (data, id, callback) => {
         pool.query(
-            "UPDATE `user` SET `deleted` = ? WHERE `id` = ?",
+            "UPDATE `user` SET `deleted` = ?,`updtBy` =? WHERE `id` = ?",
             [
                 process.env.DELETED,
+                data?.updtBy,
                 id
             ],
             (error, result) => {
@@ -73,7 +105,7 @@ module.exports = {
     },
     getStudentById: (id, callback) => {
         pool.query(
-            "SELECT `id` , `name` FROM `student` WHERE `deleted` = ? and `id` = ?",
+           "SELECT u.`id` , u.`firstname`,u.`middelname`,u.`lastname`,u.`email`,u.`mobile`,u.`address`,u.`gender`,u.`dob`,s.`categoryId`,s.`fatherName`,s.`rollNumber`,s.`fatherMobile`,s.`motherName`,s.`motherMobile`,s.`parentEmail`,s.`hostel`,s.`guardianName`,s.`guardianMobile`,s.`roomNumber` FROM `user` u LEFT JOIN `student` s ON s.`userId` = u.`id` WHERE u.`deleted` = ? and u.`id` = ?",
             [
                 process.env.NOTDELETED,
                 id
@@ -85,7 +117,7 @@ module.exports = {
     },
     getAllStudent: (callback) => {
         pool.query(
-            "SELECT `id` , `name`,`groupId` FROM `student` WHERE `deleted` = ?",
+           "SELECT u.`id`,u.`firstname`,u.`middelname`,u.`lastname`,u.`email`,u.`mobile` FROM `user` AS u RIGHT JOIN `student` AS s ON s.`userId` = u.`id` WHERE `deleted` = ?",
             [
                 process.env.NOTDELETED
             ],

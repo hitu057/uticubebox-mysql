@@ -14,14 +14,14 @@ const schema = {
         categoryId: joi.string().required(),
         fatherName: joi.string().required(),
         rollNumber: joi.string().required(),
-        fatherMobile: joi.number(),
-        motherName: joi.string(),
-        motherMobile: joi.number(),
-        parentEmail: joi.string().email(),
-        hostel: joi.string(),
-        guardianName: joi.string(),
-        guardianMobile: joi.number(),
-        roomNumber: joi.number()
+        fatherMobile: joi.number().allow('').allow(null),
+        motherName: joi.string().allow('').allow(null),
+        motherMobile: joi.number().allow('').allow(null),
+        parentEmail: joi.string().email().allow('').allow(null),
+        hostel: joi.string().allow('').allow(null),
+        guardianName: joi.string().allow('').allow(null),
+        guardianMobile: joi.number().allow('').allow(null),
+        roomNumber: joi.number().allow('').allow(null)
     }),
     updateStudent: joi.object({
         orgId: joi.string().required(),
@@ -29,7 +29,7 @@ const schema = {
         middelname: joi.string().required(),
         lastname: joi.string().required(),
         email: joi.string().email().required(),
-        password: joi.string().required(),
+        password: joi.string().allow('').allow(null),
         mobile: joi.number().required(),
         address: joi.string().required(),
         gender: joi.string().required(),
@@ -37,14 +37,14 @@ const schema = {
         categoryId: joi.string().required(),
         fatherName: joi.string().required(),
         rollNumber: joi.string().required(),
-        fatherMobile: joi.number(),
-        motherName: joi.string(),
-        motherMobile: joi.number(),
-        parentEmail: joi.string().email(),
-        hostel: joi.string(),
-        guardianName: joi.string(),
-        guardianMobile: joi.number(),
-        roomNumber: joi.number()
+        fatherMobile: joi.number().allow('').allow(null),
+        motherName: joi.string().allow('').allow(null),
+        motherMobile: joi.number().allow('').allow(null),
+        parentEmail: joi.string().email().allow('').allow(null),
+        hostel: joi.string().allow('').allow(null),
+        guardianName: joi.string().allow('').allow(null),
+        guardianMobile: joi.number().allow('').allow(null),
+        roomNumber: joi.number().allow('').allow(null)
     })
 }
 module.exports = schema

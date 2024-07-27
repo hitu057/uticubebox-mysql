@@ -4,6 +4,10 @@ module.exports = {
     createStudent: (req, res) => {
         const body = req?.body
         try {
+            body.orgId = decrypt(body?.orgId)
+            body.crdtBy = decrypt(body?.crdtBy)
+            body.gender = decrypt(body?.gender)
+            body.categoryId = decrypt(body?.categoryId)
             body.password = encrypt(body?.password)
             createStudent(body, (err, result) => {
                 if (err) {
@@ -29,6 +33,11 @@ module.exports = {
         const body = req?.body
         if (id) {
             try {
+                body.orgId = decrypt(body?.orgId)
+                body.updtBy = decrypt(body?.crdtBy)
+                body.gender = decrypt(body?.gender)
+                body.categoryId = decrypt(body?.categoryId)
+                body.password = body?.password ? encrypt(body?.password) : ""
                 updateStudent(body, id, (err, result) => {
                     if (err) {
                         return res.status(500).json({
@@ -59,9 +68,11 @@ module.exports = {
     },
     deleteStudent: (req, res) => {
         const id = decrypt(req?.params?.id)
+        const data = req?.body
         if (id) {
             try {
-                deleteStudent(id, (err, result) => {
+                data.updtBy = decrypt(data?.crdtBy)
+                deleteStudent(data, id, (err, result) => {
                     if (err) {
                         return res.status(500).json({
                             success: false,
@@ -100,7 +111,7 @@ module.exports = {
                     })
                 }
                 else {
-                    result = result.map(item => ({ ...item, id: encrypt(item?.id) }))
+                    result = result.map(item => ({ ...item, id: encrypt(item?.id),gender:encrypt(item?.gender),categoryId:encrypt(item?.categoryId) }))
                     return res.status(200).json({
                         status: true,
                         message: result?.length ? "Data Found" : "No Data Found",

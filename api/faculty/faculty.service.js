@@ -14,7 +14,7 @@ module.exports = {
                 data?.address,
                 data?.gender,
                 data?.dob,
-                1
+                data?.crdtBy
             ],
             (error, result) => {
                 if (error) {
@@ -43,7 +43,7 @@ module.exports = {
     },
     updateFaculty: (data, id, callback) => {
         pool.query(
-            `UPDATE user SET firstname = ?, middelname = ?, lastname = ?,email = ? ,${data?.password ? 'password = ?,' : ''} mobile = ?, address =?, gender =?, dob =? WHERE id = ?`,
+            `UPDATE user SET firstname = ?, middelname = ?, lastname = ?,email = ? ,${data?.password ? 'password = ?,' : ''} mobile = ?, address =?, gender =?, dob =?,updtBy = ? WHERE id = ?`,
             [
                 data?.firstname,
                 data?.middelname,
@@ -54,6 +54,7 @@ module.exports = {
                 data?.address,
                 data?.gender,
                 data?.dob,
+                data?.updtBy,
                 id
             ],
             (error, result) => {
@@ -79,11 +80,12 @@ module.exports = {
             }
         )
     },
-    deleteFaculty: (id, callback) => {
+    deleteFaculty: (data,id, callback) => {
         pool.query(
-            "UPDATE `user` SET `deleted` = ? WHERE `id` = ?",
+            "UPDATE `user` SET `deleted` = ? , `updtBy` = ? WHERE `id` = ?",
             [
                 process.env.DELETED,
+                data?.updtBy,
                 id
             ],
             (error, result) => {
@@ -105,7 +107,7 @@ module.exports = {
     },
     getAllFaculty: (callback) => {
         pool.query(
-            "SELECT `id`,`firstname`,`middelname`,`lastname`,`email`,`mobile` FROM `user` WHERE `deleted` = ?",
+            "SELECT u.`id`,u.`firstname`,u.`middelname`,u.`lastname`,u.`email`,u.`mobile` FROM `user` AS u RIGHT JOIN `faculty` AS f ON f.`userId` = u.`id` WHERE `deleted` = ?",
             [
                 process.env.NOTDELETED
             ],

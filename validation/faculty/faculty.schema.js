@@ -24,7 +24,7 @@ const schema = {
         middelname: joi.string().required(),
         lastname: joi.string().required(),
         email: joi.string().email().required(),
-        password: joi.string().required(),
+        password: joi.string().allow('').allow(null),
         mobile: joi.number().required(),
         address: joi.string().required(),
         gender: joi.string().required(),
