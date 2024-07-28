@@ -8,8 +8,9 @@ module.exports = {
                 process.env.NOTDELETED
             ],
             (error, result) => {
+                console.log(error)
                 if (error)
-                    return callback(error?.sqlMessage)
+                    return callback(error?.sqlMessage || "Error while getting organisation")
                 else
                     return callback(null, result)
             }
