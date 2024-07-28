@@ -9,7 +9,7 @@ module.exports = {
             ],
             (error, result) => {
                 if (error)
-                    return callback(error?.sqlMessage || "Error while getting organisation")
+                    return callback(error?.sqlMessage)
                 else
                     return callback(null, result)
             }
