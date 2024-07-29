@@ -136,5 +136,25 @@ module.exports = {
                 })
             }
         })
+    },
+    getAllSemesterByClass: (req, res) => {
+        const body = req?.body
+        body.classId = decrypt(body?.classId)
+        getAllSemester(body,(error, result) => {
+            if (error) {
+                return res.status(500).json({
+                    success: false,
+                    message: error
+                })
+            }
+            else {
+                result = result.map(item => ({ ...item, id: encrypt(item?.id) }))
+                return res.status(200).json({
+                    status: true,
+                    message: result?.length ? "Data Found" : "No Data Found",
+                    result: result
+                })
+            }
+        })
     }
 }

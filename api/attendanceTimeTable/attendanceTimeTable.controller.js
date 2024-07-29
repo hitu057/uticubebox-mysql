@@ -1,16 +1,14 @@
-const { createStudent, updateStudent, getAllStudent, deleteStudent, getStudentById, uploadImage } = require("./student.service")
+const { createAttendanceTimeTable, updateAttendanceTimeTable, getAllAttendanceTimeTable, deleteAttendanceTimeTable, getAttendanceTimeTableById } = require("./attendanceTimeTable.service")
 const { encrypt, decrypt } = require("../../enc_dec")
 module.exports = {
-    createStudent: (req, res) => {
+    createAttendanceTimeTable: (req, res) => {
         const body = req?.body
         try {
-            body.gender = decrypt(body?.gender)
-            body.categoryId = decrypt(body?.categoryId)
-            body.batchId = decrypt(body?.batchId)
-            body.password = encrypt(body?.password)
-            body.classId = decrypt(body?.classId)
+            body.departmentId = decrypt(body?.departmentId)
+            body.userId = decrypt(body?.userId)
             body.semesterId = decrypt(body?.semesterId)
-            createStudent(body, (err, result) => {
+            body.classId = decrypt(body?.classId)
+            createAttendanceTimeTable(body, (err, result) => {
                 if (err) {
                     return res.status(500).json({
                         success: false,
@@ -19,7 +17,7 @@ module.exports = {
                 }
                 return res.status(200).json({
                     status: true,
-                    message: "Student Added Successfully"
+                    message: "Attendance Time Table Added Successfully"
                 })
             })
         } catch (error) {
@@ -29,17 +27,16 @@ module.exports = {
             })
         }
     },
-    updateStudent: (req, res) => {
+    updateAttendanceTimeTable: (req, res) => {
         const id = decrypt(req?.params?.id)
         const body = req?.body
         if (id) {
             try {
-                body.gender = decrypt(body?.gender)
-                body.categoryId = decrypt(body?.categoryId)
-                body.classId = decrypt(body?.classId)
+                body.departmentId = decrypt(body?.departmentId)
+                body.userId = decrypt(body?.userId)
                 body.semesterId = decrypt(body?.semesterId)
-                body.password = body?.password ? encrypt(body?.password) : ""
-                updateStudent(body, id, (err, result) => {
+                body.classId = decrypt(body?.classId)
+                updateAttendanceTimeTable(body, id, (err, result) => {
                     if (err) {
                         return res.status(500).json({
                             success: false,
@@ -49,7 +46,7 @@ module.exports = {
                     else {
                         return res.status(200).json({
                             status: true,
-                            message: "Student Updated Successfully"
+                            message: "Attendance Time Table Updated Successfully"
                         })
                     }
                 })
@@ -67,12 +64,12 @@ module.exports = {
             })
         }
     },
-    deleteStudent: (req, res) => {
+    deleteAttendanceTimeTable: (req, res) => {
         const id = decrypt(req?.params?.id)
-        const data = req?.body
+        const body = req?.body
         if (id) {
             try {
-                deleteStudent(data, id, (err, result) => {
+                deleteAttendanceTimeTable(body, id, (err, result) => {
                     if (err) {
                         return res.status(500).json({
                             success: false,
@@ -82,7 +79,7 @@ module.exports = {
                     else {
                         return res.status(200).json({
                             status: true,
-                            message: "Student Deleted Successfully"
+                            message: "Attendance Time Table Deleted Successfully"
                         })
                     }
                 })
@@ -100,10 +97,10 @@ module.exports = {
             })
         }
     },
-    getStudentById: (req, res) => {
+    getAttendanceTimeTableById: (req, res) => {
         const id = decrypt(req?.params?.id)
         if (id) {
-            getStudentById(id, (error, result) => {
+            getAttendanceTimeTableById(id, (error, result) => {
                 if (error) {
                     return res.status(500).json({
                         success: false,
@@ -111,7 +108,7 @@ module.exports = {
                     })
                 }
                 else {
-                    result = result.map(item => ({ ...item, id: encrypt(item?.id), gender: encrypt(item?.gender), categoryId: encrypt(item?.categoryId) }))
+                    result = result.map(item => ({ ...item, id: encrypt(item?.id),userId:encrypt(item?.userId),semesterId:encrypt(item?.semesterId),classId:encrypt(item?.classId),departmentId:encrypt(item?.departmentId) }))
                     return res.status(200).json({
                         status: true,
                         message: result?.length ? "Data Found" : "No Data Found",
@@ -127,9 +124,9 @@ module.exports = {
             })
         }
     },
-    getAllStudent: (req, res) => {
+    getAllAttendanceTimeTable: (req, res) => {
         const body = req?.body
-        getAllStudent(body, (error, result) => {
+        getAllAttendanceTimeTable(body,(error, result) => {
             if (error) {
                 return res.status(500).json({
                     success: false,
@@ -145,31 +142,5 @@ module.exports = {
                 })
             }
         })
-    },
-    uploadImage: (req, res) => {
-        const id = decrypt(req?.params?.id)
-        const body = req?.body
-        body.profile = req?.file?.filename
-        try {
-            uploadImage(body, id, (err, result) => {
-                if (err) {
-                    return res.status(500).json({
-                        success: false,
-                        message: err
-                    })
-                }
-                else {
-                    return res.status(200).json({
-                        status: true,
-                        message: "Faculty image uploaded sucessfully"
-                    })
-                }
-            })
-        } catch (error) {
-            return res.status(400).json({
-                success: false,
-                message: "Bad Request"
-            })
-        }
     }
 }

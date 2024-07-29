@@ -54,12 +54,13 @@ module.exports = {
             }
         )
     },
-    getAllSemester: (data,callback) => {
+    getAllSemester: (data, callback) => {
         pool.query(
-            "SELECT s.`id` ,s.`name` ,d.`name` AS className FROM `semester` AS s LEFT JOIN `dropdown` AS d ON d.`id` = s.`classId` WHERE s.`deleted` = ? AND s.`orgId` = ?",
+            "SELECT `id` ,`name` FROM `semester` WHERE `deleted` = ? AND `orgId` = ? AND `classId` = ?",
             [
                 process.env.NOTDELETED,
-                data?.orgId
+                data?.orgId,
+                data?.classId
             ],
             (error, result) => {
                 return error ? callback(error?.sqlMessage || "Error while fetching a semester") : callback(null, result)

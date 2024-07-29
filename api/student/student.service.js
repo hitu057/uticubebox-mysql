@@ -38,15 +38,17 @@ module.exports = {
                                 data?.roomNumber
                             ],
                             (err, response) => {
-                                if (error) {
+                                if (err) {
                                     return callback(err?.sqlMessage || "Error while adding a student")
                                 } else {
                                     if (response?.insertId) {
                                         pool.query(
-                                            "INSERT INTO `batch` (`userId`,`batchId`) VALUES (?,?)",
+                                            "INSERT INTO `batch` (`userId`,`batchId`,`classId`,`semesterId`) VALUES (?,?,?,?)",
                                             [
                                                 result?.insertId,
-                                                data?.batchId
+                                                data?.batchId,
+                                                data?.classId,
+                                                data?.semesterId
                                             ],
                                             (er, res) => {
                                                 return er ? callback(er?.sqlMessage || "Error while adding a student") : callback(null, res)
@@ -96,8 +98,23 @@ module.exports = {
                             data?.roomNumber,
                             id
                         ],
-                        (error, response) => {
-                            return error ? callback(error?.sqlMessage || "Error while updating a student") : callback(null, response)
+                        (err, response) => {
+                            if (error) {
+                                return callback(err?.sqlMessage || "Error while updating a student")
+                            } else {
+                                pool.query(
+                                    "UPDATE `batch` SET `batchId` = ? , `classId` =?, `semesterId` = ? WHERE `userID` = ? AND `deleted` = ?",
+                                    [
+                                        data?.batchId,
+                                        data?.classId,
+                                        data?.semesterId,
+                                        id,
+                                        process.env.NOTDELETED
+                                    ],
+                                    (er, res) => {
+                                        return er ? callback(er?.sqlMessage || "Error while updating a student") : callback(null, res)
+                                    })
+                            }
                         }
                     )
                 }
@@ -117,7 +134,7 @@ module.exports = {
             }
         )
     },
-    uploadImage: (data,id, callback) => {
+    uploadImage: (data, id, callback) => {
         pool.query(
             "UPDATE `user` SET `profile` = ? WHERE `id` = ?",
             [
@@ -141,7 +158,7 @@ module.exports = {
             }
         )
     },
-    getAllStudent: (data,callback) => {
+    getAllStudent: (data, callback) => {
         pool.query(
             "SELECT u.`id`,u.`firstname`,u.`middelname`,u.`lastname`,u.`email`,u.`mobile` FROM `user` AS u RIGHT JOIN `student` AS s ON s.`userId` = u.`id` WHERE u.`deleted` = ? AND u.`orgId` = ?",
             [
