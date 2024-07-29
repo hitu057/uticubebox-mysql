@@ -5,8 +5,6 @@ module.exports = {
         const body = req?.body
         try {
             body.groupId = decrypt(body?.groupId)
-            body.orgId = decrypt(body?.orgId)
-            body.crdtBy = decrypt(body?.crdtBy)
             createDropdown(body, (err, result) => {
                 if (err) {
                     return res.status(500).json({
@@ -32,8 +30,6 @@ module.exports = {
         if (id) {
             try {
                 body.groupId = decrypt(body?.groupId)
-                body.orgId = decrypt(body?.orgId)
-                body.crdtBy = decrypt(body?.crdtBy)
                 updateDropdown(body, id, (err, result) => {
                     if (err) {
                         return res.status(500).json({
@@ -67,7 +63,6 @@ module.exports = {
         const body = req?.body
         if (id) {
             try {
-                body.crdtBy = decrypt(body?.crdtBy)
                 deleteDropdown(body, id, (err, result) => {
                     if (err) {
                         return res.status(500).json({
@@ -98,9 +93,10 @@ module.exports = {
     },
     getAllDropdownByGroup: (req, res) => {
         let groupId = req?.params?.groupId
+        const body = req?.body
         if (groupId) {
             groupId = decrypt(groupId)
-            getAllDropdownByGroup(groupId, (error, result) => {
+            getAllDropdownByGroup(body,groupId, (error, result) => {
                 if (error) {
                     return res.status(500).json({
                         success: false,
@@ -152,7 +148,8 @@ module.exports = {
         }
     },
     getAllDropdown: (req, res) => {
-        getAllDropdown((error, result) => {
+        const body = req?.body
+        getAllDropdown(body,(error, result) => {
             if (error) {
                 return res.status(500).json({
                     success: false,
@@ -170,7 +167,8 @@ module.exports = {
         })
     },
     getAllDropdownGroup: (req, res) => {
-        getAllDropdownGroup((error, result) => {
+        const body = req?.body
+        getAllDropdownGroup(body,(error, result) => {
             if (error) {
                 return res.status(500).json({
                     success: false,

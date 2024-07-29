@@ -1,4 +1,5 @@
 const { verify, decode } = require('jsonwebtoken')
+const { decrypt } = require('../enc_dec')
 module.exports = {
     checkToken: (req, res, next) => {
         try {
@@ -7,8 +8,8 @@ module.exports = {
                 const checkToken = verify(token, process.env.JWT_TOKEN_KEY)
                 if (checkToken) {
                     const decodedToken = decode(token, { complete: true })
-                    req.body.orgId = decodedToken?.payload?.orgId
-                    req.body.crdtBy = decodedToken?.payload?.id
+                    req.body.orgId = decrypt(decodedToken?.payload?.orgId)
+                    req.body.crdtBy = decrypt(decodedToken?.payload?.id)
                     next()
                 }
                 else {

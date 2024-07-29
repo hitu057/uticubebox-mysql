@@ -4,8 +4,6 @@ module.exports = {
     createHoliday: (req, res) => {
         const body = req?.body
         try {
-            body.orgId = decrypt(body?.orgId)
-            body.crdtBy = decrypt(body?.crdtBy)
             createHoliday(body, (err, result) => {
                 if (err) {
                     return res.status(500).json({
@@ -30,8 +28,6 @@ module.exports = {
         const body = req?.body
         if (id) {
             try {
-                body.orgId = decrypt(body?.orgId)
-                body.updtBy = decrypt(body?.crdtBy)
                 updateHoliday(body, id, (err, result) => {
                     if (err) {
                         return res.status(500).json({
@@ -65,7 +61,6 @@ module.exports = {
         const body = req?.body
         if (id) {
             try {
-                body.updtBy = decrypt(body?.crdtBy)
                 deleteHoliday(body, id, (err, result) => {
                     if (err) {
                         return res.status(500).json({
@@ -122,7 +117,8 @@ module.exports = {
         }
     },
     getAllHoliday: (req, res) => {
-        getAllHoliday((error, result) => {
+        const body = req?.body
+        getAllHoliday(body,(error, result) => {
             if (error) {
                 return res.status(500).json({
                     success: false,

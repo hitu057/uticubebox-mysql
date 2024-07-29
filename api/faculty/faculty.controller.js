@@ -4,8 +4,6 @@ module.exports = {
     createFaculty: (req, res) => {
         const body = req?.body
         try {
-            body.orgId = decrypt(body?.orgId)
-            body.crdtBy = decrypt(body?.crdtBy)
             body.gender = decrypt(body?.gender)
             body.departmentId = decrypt(body?.departmentId)
             body.designationId = decrypt(body?.designationId)
@@ -38,7 +36,6 @@ module.exports = {
         if (id) {
             try {
                 body.gender = decrypt(body?.gender)
-                body.updtBy = decrypt(body?.crdtBy)
                 body.departmentId = decrypt(body?.departmentId)
                 body.designationId = decrypt(body?.designationId)
                 body.qualificationId = decrypt(body?.qualificationId)
@@ -78,7 +75,6 @@ module.exports = {
         const data = req?.body
         if (id) {
             try {
-                body.updtBy = decrypt(body?.crdtBy)
                 deleteFaculty(data, id, (err, result) => {
                     if (err) {
                         return res.status(500).json({
@@ -135,7 +131,8 @@ module.exports = {
         }
     },
     getAllFaculty: (req, res) => {
-        getAllFaculty((error, result) => {
+        const body = req?.body
+        getAllFaculty(body,(error, result) => {
             if (error) {
                 return res.status(500).json({
                     success: false,

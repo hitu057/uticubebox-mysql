@@ -23,7 +23,7 @@ module.exports = {
                 data?.title,
                 data?.description,
                 data?.holidayDate,
-                data?.updtBy,
+                data?.crdtBy,
                 id
             ],
             (error, result) => {
@@ -36,7 +36,7 @@ module.exports = {
             "UPDATE `holiday` SET `deleted` = ?,`updtBy` = ? WHERE `id` = ?",
             [
                 process.env.DELETED,
-                data?.updtBy,
+                data?.crdtBy,
                 id
             ],
             (error, result) => {
@@ -56,11 +56,12 @@ module.exports = {
             }
         )
     },
-    getAllHoliday: (callback) => {
+    getAllHoliday: (data,callback) => {
         pool.query(
-            "SELECT `id` , `title`, `description`, `holidayDate` FROM `holiday` WHERE `deleted` = ?",
+            "SELECT `id` , `title`, `description`, `holidayDate` FROM `holiday` WHERE `deleted` = ? AND `orgId` = ?",
             [
-                process.env.NOTDELETED
+                process.env.NOTDELETED,
+                data?.orgId
             ],
             (error, result) => {
                 return error ? callback(error?.sqlMessage || "Error while fetching a holiday") : callback(null, result)

@@ -54,7 +54,7 @@ module.exports = {
                 data?.address,
                 data?.gender,
                 data?.dob,
-                data?.updtBy,
+                data?.crdtBy,
                 id
             ],
             (error, result) => {
@@ -85,7 +85,7 @@ module.exports = {
             "UPDATE `user` SET `deleted` = ? , `updtBy` = ? WHERE `id` = ?",
             [
                 process.env.DELETED,
-                data?.updtBy,
+                data?.crdtBy,
                 id
             ],
             (error, result) => {
@@ -117,11 +117,12 @@ module.exports = {
             }
         )
     },
-    getAllFaculty: (callback) => {
+    getAllFaculty: (data,callback) => {
         pool.query(
-            "SELECT u.`id`,u.`firstname`,u.`middelname`,u.`lastname`,u.`email`,u.`mobile` FROM `user` AS u RIGHT JOIN `faculty` AS f ON f.`userId` = u.`id` WHERE `deleted` = ?",
+            "SELECT u.`id`,u.`firstname`,u.`middelname`,u.`lastname`,u.`email`,u.`mobile` FROM `user` AS u RIGHT JOIN `faculty` AS f ON f.`userId` = u.`id` WHERE u.`deleted` = ? AND u.`orgId` = ?",
             [
-                process.env.NOTDELETED
+                process.env.NOTDELETED,
+                data?.orgId
             ],
             (error, result) => {
                 return error ? callback(error?.sqlMessage || "Error while fetching a faculty") : callback(null, result)
