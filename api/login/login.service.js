@@ -27,8 +27,24 @@ module.exports = {
             (error, result) => {
                 if (error)
                     return callback(error?.sqlMessage || "Error while login")
-                else
-                    return callback(null, result)
+                else {
+                    if (result.length) {
+                        pool.query(
+                            "INSERT INTO `loginTransaction` (`userId`,`deviceId`) VALUES (?,?)",
+                            [
+                                result?.[0]?.id,
+                                data?.deviceId
+                            ],
+                            (err, res) => {
+                                if (err)
+                                    return callback(err?.sqlMessage || "Error while login")
+                                else
+                                    return callback(null, result)
+                            })
+                    }
+                    else
+                        return callback(error?.sqlMessage || "Error while login")
+                }
             }
         )
     }
