@@ -3,16 +3,14 @@ const schema = {
     createSemester: joi.object({
         orgId: joi.string().required(),
         crdtBy: joi.string().required(),
-        title: joi.string().required(),
-        description: joi.string().allow('').allow(null),
-        holidayDate: joi.date().required()
+        name: joi.string().required(),
+        classId: joi.string().required()
     }),
     updateSemester: joi.object({
         orgId: joi.string().required(),
         crdtBy: joi.string().required(),
-        title: joi.string().required(),
-        description: joi.string().allow('').allow(null),
-        holidayDate: joi.date().required()
+        name: joi.string().required(),
+        classId: joi.string().required()
     })
 }
 module.exports = schema

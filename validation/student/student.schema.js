@@ -2,6 +2,7 @@ const joi = require("@hapi/joi")
 const schema = {
     createStudent: joi.object({
         orgId: joi.string().required(),
+        crdtBy: joi.string().required(),
         firstname: joi.string().required(),
         middelname: joi.string().required(),
         lastname: joi.string().required(),
@@ -28,6 +29,7 @@ const schema = {
     }),
     updateStudent: joi.object({
         orgId: joi.string().required(),
+        crdtBy: joi.string().required(),
         firstname: joi.string().required(),
         middelname: joi.string().required(),
         lastname: joi.string().required(),

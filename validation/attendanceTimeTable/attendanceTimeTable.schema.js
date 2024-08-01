@@ -6,9 +6,10 @@ const schema = {
         userId: joi.string().required(),
         classId: joi.string().required(),
         departmentId: joi.string().required(),
+        semesterId: joi.string().required(),
         lectureDate: joi.date().required(),
-        startTime:joi.string.required(),
-        endTime:joi.string.required()
+        startTime:joi.string().required(),
+        endTime:joi.string().required()
     }),
     updateAttendanceTimeTable: joi.object({
         orgId: joi.string().required(),
@@ -16,9 +17,10 @@ const schema = {
         userId: joi.string().required(),
         classId: joi.string().required(),
         departmentId: joi.string().required(),
+        semesterId: joi.string().required(),
         lectureDate: joi.date().required(),
-        startTime:joi.string.required(),
-        endTime:joi.string.required()
+        startTime:joi.string().required(),
+        endTime:joi.string().required()
     })
 }
 module.exports = schema

@@ -1,10 +1,10 @@
-const { createSemester, updateSemester, getAllSemester, deleteSemester, getSemesterById } = require("./semester.service")
+const { createSemester, updateSemester, getAllSemester, deleteSemester, getSemesterById, getAllSemesterByClass } = require("./semester.service")
 const { encrypt, decrypt } = require("../../enc_dec")
 module.exports = {
     createSemester: (req, res) => {
         const body = req?.body
         try {
-            body?.classId = decrypt(body?.classId)
+            body.classId = decrypt(body?.classId)
             createSemester(body, (err, result) => {
                 if (err) {
                     return res.status(500).json({
@@ -29,7 +29,7 @@ module.exports = {
         const body = req?.body
         if (id) {
             try {
-                body?.classId = decrypt(body?.classId)
+                body.classId = decrypt(body?.classId)
                 updateSemester(body, id, (err, result) => {
                     if (err) {
                         return res.status(500).json({
@@ -102,7 +102,7 @@ module.exports = {
                     })
                 }
                 else {
-                    result = result.map(item => ({ ...item, id: encrypt(item?.id),classId:encrypt(item?.classId) }))
+                    result = result.map(item => ({ ...item, id: encrypt(item?.id), classId: encrypt(item?.classId) }))
                     return res.status(200).json({
                         status: true,
                         message: result?.length ? "Data Found" : "No Data Found",
@@ -120,7 +120,7 @@ module.exports = {
     },
     getAllSemester: (req, res) => {
         const body = req?.body
-        getAllSemester(body,(error, result) => {
+        getAllSemester(body, (error, result) => {
             if (error) {
                 return res.status(500).json({
                     success: false,
@@ -139,8 +139,9 @@ module.exports = {
     },
     getAllSemesterByClass: (req, res) => {
         const body = req?.body
-        body.classId = decrypt(body?.classId)
-        getAllSemester(body,(error, result) => {
+        const classId = decrypt(req?.params?.id)
+        body.classId = classId
+        getAllSemesterByClass(body, (error, result) => {
             if (error) {
                 return res.status(500).json({
                     success: false,

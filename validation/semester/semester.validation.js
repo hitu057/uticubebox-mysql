@@ -1,4 +1,4 @@
-const { createSemester, updateSemester } = require("./holiday.schema")
+const { createSemester, updateSemester } = require("./semester.schema")
 
 module.exports = {
     createSemesterValidation: (req, res, next) => {
