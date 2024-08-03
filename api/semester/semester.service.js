@@ -56,7 +56,7 @@ module.exports = {
     },
     getAllSemester: (data, callback) => {
         pool.query(
-            "SELECT `id` ,`name` FROM `semester` WHERE `deleted` = ? AND `orgId` = ?",
+            "SELECT `id` ,`name`,`classId` FROM `semester` WHERE `deleted` = ? AND `orgId` = ?",
             [
                 process.env.NOTDELETED,
                 data?.orgId
