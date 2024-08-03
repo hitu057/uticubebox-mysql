@@ -13,6 +13,7 @@ app.use("/faculty", require("./api/faculty/faculty.router"))
 app.use("/student", require("./api/student/student.router"))
 app.use("/holiday", require("./api/holiday/holiday.router"))
 app.use("/semester", require("./api/semester/semester.router"))
+app.use("/attendance", require("./api/attendance/attendance.router"))
 app.use("/attendanceTimeTable", require("./api/attendanceTimeTable/attendanceTimeTable.router"))
 
 app.listen(process.env.PORT, () => {
