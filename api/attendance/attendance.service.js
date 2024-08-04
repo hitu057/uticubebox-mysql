@@ -155,4 +155,20 @@ module.exports = {
             }
         )
     },
+    studentList: (data, callback) => {
+        pool.query(
+            "SELECT u.`id`,u.`firstname`,u.`middelname`,u.`lastname`,u.`profile`,s.`rollNumber`,a.`isPresent`,a.`remark` FROM `user` AS u RIGHT JOIN `student` AS s ON s.`userId` = u.`id` LEFT JOIN `batch` AS b ON b.`userId` = u.`id` LEFT JOIN `attendance` AS a ON a.`userId` = u.`id` AND a.`timeTableId` = ? WHERE u.`orgId` = ? AND u.`deleted` =? AND b.`classId` = ? AND b.`semesterId` = ? AND b.`deleted` = ?",
+            [
+                data?.timeTableId,
+                data?.orgId,
+                process.env.NOTDELETED,
+                data?.classId,
+                data?.semesterId,
+                process.env.NOTDELETED
+            ],
+            (error, result) => {
+                return error ? callback(error?.sqlMessage || "Error while fetching student list") : callback(null, result)
+            }
+        )
+    },
 }

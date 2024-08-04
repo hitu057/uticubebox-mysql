@@ -1,4 +1,4 @@
-const { verifyFaculty, startAttendance, stopAttendance, markAttendance } = require("./attendance.service")
+const { verifyFaculty, startAttendance, stopAttendance, markAttendance, studentList } = require("./attendance.service")
 const { decrypt, encrypt } = require("../../enc_dec")
 module.exports = {
     verifyFaculty: (req, res) => {
@@ -141,5 +141,32 @@ module.exports = {
                 message: "Bad Request"
             })
         }
-    }
+    },
+    studentList: (req, res) => {
+        const body = req?.body
+        try {
+            body.classId = decrypt(body?.classId)
+            body.semesterId = decrypt(body?.semesterId)
+            body.timeTableId = decrypt(body?.timeTableId)
+            studentList(body, (err, result) => {
+                if (err) {
+                    return res.status(500).json({
+                        success: false,
+                        message: err
+                    })
+                }
+                result = result.map(item => ({ ...item, id: encrypt(item?.id),profile:item?.profile ? `${process.env.USERIMAGE}${item?.profile}` : null }))
+                return res.status(200).json({
+                    status: true,
+                    message: "Student Data",
+                    result: result
+                })
+            })
+        } catch (error) {
+            return res.status(400).json({
+                success: false,
+                message: "Bad Request"
+            })
+        }
+    },
 }
