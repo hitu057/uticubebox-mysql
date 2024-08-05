@@ -14,7 +14,20 @@ const schema = {
         semesterId: joi.string().required(),
         lectureDate: joi.date().required(),
         startTime:joi.string().required(),
-        endTime:joi.string().required()
+        endTime:joi.string().required(),
+        password:joi.string().required()
+    }),
+    verifyStudent: joi.object({
+        orgId: joi.string().required(),
+        crdtBy: joi.string().required(),
+        userId: joi.string().required(),
+        classId: joi.string().required(),
+        departmentId: joi.string().required(),
+        semesterId: joi.string().required(),
+        lectureDate: joi.date().required(),
+        startTime:joi.string().required(),
+        endTime:joi.string().required(),
+        password:joi.string().required()
     }),
     startAttendance: joi.object({
         orgId: joi.string().required(),
@@ -58,6 +71,14 @@ const schema = {
         classId:joi.string().required(),
         semesterId:joi.string().required(),
         timeTableId:joi.string().required()
-    })
+    }),
+    viewAttendance: joi.object({
+        orgId: joi.string().required(),
+        crdtBy: joi.string().required(),
+        classId:joi.string().allow('').allow(null),
+        semesterId:joi.string().required(),
+        startDate:joi.date().required(),
+        endDate:joi.date().required()
+    }),
 }
 module.exports = schema

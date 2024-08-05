@@ -3,7 +3,7 @@ const pool = require("../../config/database")
 module.exports = {
     verifyFaculty: (data, callback) => {
         pool.query(
-            "SELECT `id` FROM `attendanceTimeTable` WHERE `orgId` = ? AND `userId` = ? AND `classId` = ?  AND `semesterId` = ?  AND `departmentId` = ?  AND `lectureDate` = ? AND `startTime` = ? AND `endTime` = ? AND `deleted` =?",
+            "SELECT a.`id` FROM `attendanceTimeTable` a LEFT JOIN `user` u ON u.`id` = a.`userId` WHERE a.`orgId` = ? AND a.`userId` = ? AND a.`classId` = ?  AND a.`semesterId` = ?  AND a.`departmentId` = ?  AND a.`lectureDate` = ? AND a.`startTime` = ? AND a.`endTime` = ? AND a.`deleted` =? AND u.`password` = ?",
             [
                 data?.orgId,
                 data?.userId,
@@ -13,7 +13,8 @@ module.exports = {
                 data?.lectureDate,
                 data?.startTime,
                 data?.endTime,
-                process.env.NOTDELETED
+                process.env.NOTDELETED,
+                data?.password
             ],
             (error, result) => {
                 return error ? callback(error?.sqlMessage || 'Error while verifying faculty') : callback(null, result)
@@ -40,7 +41,7 @@ module.exports = {
                 } else {
                     if (result?.length && result?.[0]?.id) {
                         const res = result?.[0]
-                        if (res?.isStarted){
+                        if (res?.isStarted) {
                             res.uniqueId = res?.id
                             return callback(null, result)
                         }
@@ -86,7 +87,7 @@ module.exports = {
                 } else {
                     if (result?.length && result?.[0]?.id) {
                         const res = result?.[0]
-                        if (!res?.isStarted){
+                        if (!res?.isStarted) {
                             res.uniqueId = res?.id
                             return callback(null, res)
                         }
@@ -103,13 +104,13 @@ module.exports = {
                             }
                         )
                     }
-                    else 
+                    else
                         return callback("No timetable found")
                 }
             }
         )
     },
-    markAttendance: (orgId,timeTableId,data, callback) => {
+    markAttendance: (orgId, timeTableId, data, callback) => {
         pool.query(
             "SELECT `id` FROM `attendance` WHERE `orgId` = ? AND `timeTableId` = ? AND `userId` = ? AND `deleted` =?",
             [
@@ -150,7 +151,7 @@ module.exports = {
                                 return error ? callback(error?.sqlMessage || "Error while marking a attendance") : callback(null, response)
                             }
                         )
-                    } 
+                    }
                 }
             }
         )
@@ -168,6 +169,42 @@ module.exports = {
             ],
             (error, result) => {
                 return error ? callback(error?.sqlMessage || "Error while fetching student list") : callback(null, result)
+            }
+        )
+    },
+    verifyStudent: (data, callback) => {
+        pool.query(
+            "SELECT a.`id` FROM `attendanceTimeTable` a LEFT JOIN `user` u ON u.`id` = ? WHERE a.`orgId` = ? AND a.`classId` = ?  AND a.`semesterId` = ?  AND a.`departmentId` = ?  AND a.`lectureDate` = ? AND a.`startTime` = ? AND a.`endTime` = ? AND a.`deleted` =? AND u.`password` = ?",
+            [
+                data?.userId,
+                data?.orgId,
+                data?.classId,
+                data?.semesterId,
+                data?.departmentId,
+                data?.lectureDate,
+                data?.startTime,
+                data?.endTime,
+                process.env.NOTDELETED,
+                data?.password
+            ],
+            (error, result) => {
+                return error ? callback(error?.sqlMessage || 'Error while verifying student') : callback(null, result)
+            }
+        )
+    },
+    viewAttendance: (data, callback) => {
+        pool.query(
+            "SELECT u.`id`, u.`firstname`,u.`middelname`,u.`lastname`, COUNT(a.`id`) AS totalClasses, SUM(CASE WHEN a.`isPresent` = 1 THEN 1 ELSE 0 END) AS presentCount FROM `attendanceTimeTable` at LEFT JOIN `attendance` a ON at.`id` = a.`timeTableId` LEFT JOIN `user` u ON u.`id` = at.`userId` WHERE at.`orgId` = ? AND at.`classId` = ? AND at.`semesterId` = ? AND at.`lectureDate` between ? AND ? AND at.`deleted` = ? GROUP BY at.`id`",
+            [
+                data?.orgId,
+                data?.classId,
+                data?.semesterId,
+                data?.startDate,
+                data?.endDate,
+                process.env.NOTDELETED
+            ],
+            (error, result) => {
+                return error ? callback(error?.sqlMessage || 'Error while fetching attendance') : callback(null, result)
             }
         )
     },
