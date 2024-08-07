@@ -160,7 +160,7 @@ module.exports = {
     },
     getAllStudent: (data, callback) => {
         pool.query(
-            "SELECT u.`id`,u.`firstname`,u.`middelname`,u.`lastname`,u.`email`,u.`mobile` FROM `user` AS u RIGHT JOIN `student` AS s ON s.`userId` = u.`id` WHERE u.`deleted` = ? AND u.`orgId` = ?",
+            "SELECT u.`id`,u.`firstname`,u.`middelname`,u.`lastname`,u.`email`,u.`mobile`,u.`profile` FROM `user` AS u RIGHT JOIN `student` AS s ON s.`userId` = u.`id` WHERE u.`deleted` = ? AND u.`orgId` = ?",
             [
                 process.env.NOTDELETED,
                 data?.orgId
