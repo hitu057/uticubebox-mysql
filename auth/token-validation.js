@@ -14,21 +14,21 @@ module.exports = {
                 }
                 else {
                     res.status(401).json({
-                        status: false,
+                        success: false,
                         message: "Provide valid token"
                     })
                 }
             }
             else {
                 res.status(401).json({
-                    status: false,
+                    success: false,
                     message: "Provide valid token"
                 })
             }
 
         } catch (error) {
             res.status(401).json({
-                status: false,
+                success: false,
                 message: "Provide valid token"
             })
         }

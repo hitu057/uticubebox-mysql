@@ -18,12 +18,12 @@ module.exports = {
                 }
                 if (result?.length && result?.[0]?.id) {
                     return res.status(200).json({
-                        status: true,
+                        success: true,
                         message: "Faculty Verified Successfully"
                     })
                 }
                 return res.status(500).json({
-                    status: false,
+                    success: false,
                     message: "Faculty not verified"
                 })
             })
@@ -49,7 +49,7 @@ module.exports = {
                     })
                 }
                 return res.status(200).json({
-                    status: true,
+                    success: true,
                     message: (result?.length && result?.[0]?.id) ? "Attendance Already started" : "Attendance started successfully",
                     result: (result?.length && result?.[0]?.id) ? encrypt(result?.[0]?.uniqueId) : encrypt(result?.uniqueId)
                 })
@@ -76,7 +76,7 @@ module.exports = {
                     })
                 }
                 return res.status(200).json({
-                    status: true,
+                    success: true,
                     message: (result?.length && result?.[0]?.id) ? "Attendance Already stopped" : "Attendance stopped successfully"
                 })
             })
@@ -104,7 +104,7 @@ module.exports = {
                 })
             })
             return res.status(200).json({
-                status: true,
+                success: true,
                 message: "Attendance marked successfully"
             })
         } catch (error) {
@@ -131,7 +131,7 @@ module.exports = {
                     })
                 }
                 return res.status(200).json({
-                    status: true,
+                    success: true,
                     message: "Attendance marked successfully"
                 })
             })
@@ -157,7 +157,7 @@ module.exports = {
                 }
                 result = result.map(item => ({ ...item, id: encrypt(item?.id), profile: item?.profile ? `${process.env.USERIMAGE}${item?.profile}` : null }))
                 return res.status(200).json({
-                    status: true,
+                    success: true,
                     message: "Student Data",
                     result: result
                 })
@@ -186,12 +186,12 @@ module.exports = {
                 }
                 if (result?.length && result?.[0]?.id) {
                     return res.status(200).json({
-                        status: true,
+                        success: true,
                         message: "Student Verified Successfully"
                     })
                 }
                 return res.status(500).json({
-                    status: false,
+                    success: false,
                     message: "Student not verified"
                 })
             })
@@ -219,7 +219,7 @@ module.exports = {
                 }
                 result = result.map(item => ({ ...item, id: encrypt(item?.id) }))
                 return res.status(200).json({
-                    status: true,
+                    success: true,
                     message: "Attendance data",
                     result: result
                 })

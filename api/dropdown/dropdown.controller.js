@@ -13,7 +13,7 @@ module.exports = {
                     })
                 }
                 return res.status(200).json({
-                    status: true,
+                    success: true,
                     message: "Dropdown Added Successfully"
                 })
             })
@@ -39,7 +39,7 @@ module.exports = {
                     }
                     else {
                         return res.status(200).json({
-                            status: true,
+                            success: true,
                             message: "Dropdown Updated Successfully"
                         })
                     }
@@ -72,7 +72,7 @@ module.exports = {
                     }
                     else {
                         return res.status(200).json({
-                            status: true,
+                            success: true,
                             message: "Dropdown Deleted Successfully"
                         })
                     }
@@ -106,7 +106,7 @@ module.exports = {
                 else {
                     result = result.map(item => ({ ...item, id: encrypt(item?.id) }))
                     return res.status(200).json({
-                        status: true,
+                        success: true,
                         message: result?.length ? "Data Found" : "No Data Found",
                         result: result
                     })
@@ -133,7 +133,7 @@ module.exports = {
                 else {
                     result = result.map(item => ({ ...item, id: encrypt(item?.id) }))
                     return res.status(200).json({
-                        status: true,
+                        success: true,
                         message: result?.length ? "Data Found" : "No Data Found",
                         result: result?.length ? result?.[0] : result
                     })
@@ -159,7 +159,7 @@ module.exports = {
             else {
                 result = result.map(item => ({ ...item, id: encrypt(item?.id) }))
                 return res.status(200).json({
-                    status: true,
+                    success: true,
                     message: result?.length ? "Data Found" : "No Data Found",
                     result: result
                 })
@@ -178,7 +178,7 @@ module.exports = {
             else {
                 result = result.map(item => ({ ...item, id: encrypt(item?.id) }))
                 return res.status(200).json({
-                    status: true,
+                    success: true,
                     message: result?.length ? "Data Found" : "No Data Found",
                     result: result
                 })

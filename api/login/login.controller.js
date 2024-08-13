@@ -46,7 +46,7 @@ module.exports = {
                 else {
                     result = result.map(item => ({ ...item, id: encrypt(item?.id) }))
                     return res.status(200).json({
-                        status: true,
+                        success: true,
                         message: "Organisation Data",
                         result : result
                     })
@@ -75,14 +75,14 @@ module.exports = {
                     if (result?.length) {
                         const data = result?.[0]
                         data.type = data?.fid > 0 ? 'Faculty' : 'Student'
-                        delete data.sid
-                        delete data.fid
+                        delete data?.sid
+                        delete data?.fid
                         data.id = encrypt(data?.id)
                         data.orgId = encrypt(data?.orgId)
                         data.loginAt = new Date()
                         data.profile = data?.profile ? process.env.USERIMAGE + data?.profile : null
                         return res.status(200).json({
-                            status: true,
+                            success: true,
                             message: "Login Successful",
                             token: sign(data, process.env.JWT_TOKEN_KEY, {
                                 expiresIn: "1h"
@@ -91,7 +91,7 @@ module.exports = {
                     }
                     else {
                         return res.status(400).json({
-                            status: false,
+                            success: false,
                             message: "Invalid email OR password"
                         })
                     }

@@ -16,7 +16,7 @@ module.exports = {
                     })
                 }
                 return res.status(200).json({
-                    status: true,
+                    success: true,
                     message: "Attendance Time Table Added Successfully"
                 })
             })
@@ -45,7 +45,7 @@ module.exports = {
                     }
                     else {
                         return res.status(200).json({
-                            status: true,
+                            success: true,
                             message: "Attendance Time Table Updated Successfully"
                         })
                     }
@@ -78,7 +78,7 @@ module.exports = {
                     }
                     else {
                         return res.status(200).json({
-                            status: true,
+                            success: true,
                             message: "Attendance Time Table Deleted Successfully"
                         })
                     }
@@ -110,7 +110,7 @@ module.exports = {
                 else {
                     result = result.map(item => ({ ...item, id: encrypt(item?.id),userId:encrypt(item?.userId),semesterId:encrypt(item?.semesterId),classId:encrypt(item?.classId),departmentId:encrypt(item?.departmentId) }))
                     return res.status(200).json({
-                        status: true,
+                        success: true,
                         message: result?.length ? "Data Found" : "No Data Found",
                         result: result?.length ? result?.[0] : result
                     })
@@ -136,7 +136,7 @@ module.exports = {
             else {
                 result = result.map(item => ({ ...item, id: encrypt(item?.id) }))
                 return res.status(200).json({
-                    status: true,
+                    success: true,
                     message: result?.length ? "Data Found" : "No Data Found",
                     result: result
                 })
