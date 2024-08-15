@@ -15,6 +15,7 @@ app.use("/holiday", require("./api/holiday/holiday.router"))
 app.use("/semester", require("./api/semester/semester.router"))
 app.use("/attendance", require("./api/attendance/attendance.router"))
 app.use("/attendanceTimeTable", require("./api/attendanceTimeTable/attendanceTimeTable.router"))
+app.use("/fee", require("./api/fee/fee.router"))
 
 app.listen(process.env.PORT, () => {
     console.log("server is running on PORT", process.env.PORT)
