@@ -1,4 +1,4 @@
-const { createFee, updateFee, getAllFee, deleteFee, getFeeById,addOnlinePayment, addOfflinePayment,pendingForApproval,approvePayment,rejectPayment } = require("./fee.service")
+const { createFee, updateFee, getAllFee, deleteFee, getFeeById,addOnlinePayment, addOfflinePayment,pendingForApproval,approvePayment,rejectPayment,studentFee } = require("./fee.service")
 const { encrypt, decrypt } = require("../../enc_dec")
 module.exports = {
     createFee: (req, res) => {
@@ -254,6 +254,34 @@ module.exports = {
                     return res.status(200).json({
                         success: true,
                         message: "Payment Rejected Successfully",
+                    })
+                }
+            })
+        } catch (error) {
+            return res.status(400).json({
+                success: false,
+                message: "Bad Request"
+            })
+        }
+    },
+    studentFee: (req, res) => {
+        const body = req?.body
+        try {
+            body.classId = decrypt(body?.classId)
+            body.semesterId = decrypt(body?.semesterId)
+            studentFee(body, (err, result) => {
+                if (err) {
+                    return res.status(500).json({
+                        success: false,
+                        message: err
+                    })
+                }
+                else {
+                    result = result.map(item => ({ ...item, id: encrypt(item?.id) }))
+                    return res.status(200).json({
+                        success: true,
+                        message: "Student Fee Data",
+                        data:result
                     })
                 }
             })

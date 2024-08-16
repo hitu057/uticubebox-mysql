@@ -47,5 +47,11 @@ const schema = {
         id:joi.string().required(),
         reason:joi.string().required()
     }),
+    studentFee: joi.object({
+        orgId: joi.string().required(),
+        crdtBy: joi.string().required(),
+        classId:joi.string().required(),
+        semesterId:joi.string().required()
+    })
 }
 module.exports = schema

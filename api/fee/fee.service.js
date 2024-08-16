@@ -108,6 +108,21 @@ module.exports = {
             }
         )
     },
+    studentFee: (data,callback) => {
+        pool.query(
+            "SELECT f.`id`,f.`title`,f.`description`,f.`startDate`,f.`endDate`,f.`amount`,COALESCE(SUM(p.`amount`), 0) AS paidAmount FROM `fee` f LEFT JOIN `payment` p ON p.`feeId` = f.`id` AND p.`paymentStatus` = ? WHERE f.`deleted` =? AND f.`orgId` = ? AND f.`classId` = ? AND f.`semesterId` =? GROUP BY f.`id`",
+            [
+                process.env.ACTIVE,
+                process.env.NOTDELETED,
+                data?.orgId,
+                data?.classId,
+                data?.semesterId
+            ],
+            (error, result) => {
+                return error ? callback(error?.sqlMessage || "Error while fetching a student fee") : callback(null, result)
+            }
+        )
+    },
     pendingForApproval: (data,callback) => {
         pool.query(
             "SELECT p.`id`,p.`document`,p.`amount`,f.`title`,f.`description`,f.`classId`,f.`semesterId` FROM `payment` p LEFT JOIN `fee` f ON f.`id` = p.`feeId` WHERE p.`deleted` =? AND p.`paymentStatus` = ? AND p.`type` = ? AND p.`orgId` = ?",

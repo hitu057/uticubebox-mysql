@@ -1,13 +1,14 @@
-const { createFee, updateFee, getAllFee, deleteFee, getFeeById,addOnlinePayment, addOfflinePayment, pendingForApproval ,rejectPayment,approvePayment} = require("./fee.controller")
+const { createFee, updateFee, getAllFee, deleteFee, getFeeById,addOnlinePayment, addOfflinePayment, pendingForApproval ,rejectPayment,approvePayment, studentFee} = require("./fee.controller")
 const router = require("express").Router()
 const { checkToken } = require("../../auth/token-validation")
-const { createFeeValidation, updateFeeValidation,onlinePaymentValidation,offlinePaymentValidation,rejectPaymentValidation, approvePaymentValidation } = require("../../validation/fee/fee.validation")
+const { createFeeValidation, updateFeeValidation,onlinePaymentValidation,offlinePaymentValidation,rejectPaymentValidation, approvePaymentValidation, studentFeeValidation } = require("../../validation/fee/fee.validation")
 const fileDestination = require('../../config/fileUpload')
 const allowedMimes = ['image/jpeg', 'image/png', 'image/jpg']
 const upload = fileDestination(process.env.PAYMENTIMAGE, allowedMimes)
 
 router.post("/", checkToken, createFeeValidation, createFee)
 router.post("/addOnlinePayment", checkToken, onlinePaymentValidation, addOnlinePayment)
+router.post("/studentFee", checkToken, studentFeeValidation, studentFee)
 router.get("/pendingForApproval", checkToken, pendingForApproval)
 router.patch("/approvePayment", checkToken,approvePaymentValidation, approvePayment)
 router.patch("/rejectPayment", checkToken,rejectPaymentValidation, rejectPayment)
