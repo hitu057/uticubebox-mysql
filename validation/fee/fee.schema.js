@@ -21,6 +21,13 @@ const schema = {
         startDate:joi.date().required(),
         endDate:joi.date().required(),
         amount:joi.string().required()
-    })
+    }),
+    onlinePayment: joi.object({
+        orgId: joi.string().required(),
+        crdtBy: joi.string().required(),
+        transactionId:joi.string().required(),
+        feeId:joi.string().required(),
+        amount:joi.string().required()
+    }),
 }
 module.exports = schema

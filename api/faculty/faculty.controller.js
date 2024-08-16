@@ -114,7 +114,7 @@ module.exports = {
                     })
                 }
                 else {
-                    result = result.map(item => ({ ...item, id: encrypt(item?.id), roleId: encrypt(item?.roleId), additionalResId: encrypt(item?.additionalResId), qualificationId: encrypt(item?.qualificationId), designationId: encrypt(item?.designationId), departmentId: encrypt(item?.departmentId), gender: encrypt(item?.gender) }))
+                    result = result.map(item => ({ ...item, id: encrypt(item?.id), roleId: encrypt(item?.roleId), additionalResId: encrypt(item?.additionalResId), qualificationId: encrypt(item?.qualificationId), designationId: encrypt(item?.designationId), departmentId: encrypt(item?.departmentId), gender: encrypt(item?.gender),profile: item?.profile ? `${process.env.USERIMAGE}${item?.profile}` : null }))
                     return res.status(200).json({
                         success: true,
                         message: result?.length ? "Data Found" : "No Data Found",
@@ -132,7 +132,7 @@ module.exports = {
     },
     getAllFaculty: (req, res) => {
         const body = req?.body
-        getAllFaculty(body,(error, result) => {
+        getAllFaculty(body, (error, result) => {
             if (error) {
                 return res.status(500).json({
                     success: false,
@@ -140,7 +140,7 @@ module.exports = {
                 })
             }
             else {
-                result = result.map(item => ({ ...item, id: encrypt(item?.id),profile: item?.profile ? `${process.env.USERIMAGE}${item?.profile}` : null }))
+                result = result.map(item => ({ ...item, departmentId: encrypt(item?.departmentId), designationId: encrypt(item?.designationId), id: encrypt(item?.id), profile: item?.profile ? `${process.env.USERIMAGE}${item?.profile}` : null }))
                 return res.status(200).json({
                     success: true,
                     message: result?.length ? "Data Found" : "No Data Found",
@@ -154,7 +154,7 @@ module.exports = {
         const body = req?.body
         body.profile = req?.file?.filename
         try {
-            uploadImage(body,id, (err, result) => {
+            uploadImage(body, id, (err, result) => {
                 if (err) {
                     return res.status(500).json({
                         success: false,

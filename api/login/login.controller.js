@@ -79,6 +79,9 @@ module.exports = {
                         delete data?.fid
                         data.id = encrypt(data?.id)
                         data.orgId = encrypt(data?.orgId)
+                        data.semesterId = encrypt(data?.semesterId)
+                        data.classId = encrypt(data?.classId)
+                        data.batchId = encrypt(data?.batchId)
                         data.loginAt = new Date()
                         data.profile = data?.profile ? process.env.USERIMAGE + data?.profile : null
                         return res.status(200).json({

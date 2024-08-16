@@ -111,7 +111,7 @@ module.exports = {
                     })
                 }
                 else {
-                    result = result.map(item => ({ ...item, id: encrypt(item?.id), gender: encrypt(item?.gender), categoryId: encrypt(item?.categoryId) }))
+                    result = result.map(item => ({ ...item, id: encrypt(item?.id), gender: encrypt(item?.gender), categoryId: encrypt(item?.categoryId),batchId:encrypt(item?.batchId),classId:encrypt(item?.classId),semesterId:encrypt(item?.semesterId),profile: item?.profile ? `${process.env.USERIMAGE}${item?.profile}` : null }))
                     return res.status(200).json({
                         success: true,
                         message: result?.length ? "Data Found" : "No Data Found",

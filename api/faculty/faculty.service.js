@@ -107,7 +107,7 @@ module.exports = {
     },
     getFacultyById: (id, callback) => {
         pool.query(
-            "SELECT u.`id` , u.`firstname`,u.`middelname`,u.`lastname`,u.`email`,u.`mobile`,u.`address`,u.`gender`,u.`dob`,f.`departmentId`,f.`designationId`,f.`empId`,f.`qualificationId`,f.`additionalResId`,f.`roleId` FROM `user` u LEFT JOIN `faculty` f ON f.`userId` = u.`id` WHERE u.`deleted` = ? and u.`id` = ?",
+            "SELECT u.`id` , u.`firstname`,u.`middelname`,u.`lastname`,u.`email`,u.`mobile`,u.`address`,u.`gender`,u.`dob`,f.`departmentId`,f.`designationId`,f.`empId`,f.`qualificationId`,f.`additionalResId`,f.`roleId`,u.`profile` FROM `user` u LEFT JOIN `faculty` f ON f.`userId` = u.`id` WHERE u.`deleted` = ? and u.`id` = ?",
             [
                 process.env.NOTDELETED,
                 id
@@ -119,7 +119,7 @@ module.exports = {
     },
     getAllFaculty: (data,callback) => {
         pool.query(
-            "SELECT u.`id`,u.`firstname`,u.`middelname`,u.`lastname`,u.`email`,u.`mobile`,u.`profile` FROM `user` AS u RIGHT JOIN `faculty` AS f ON f.`userId` = u.`id` WHERE u.`deleted` = ? AND u.`orgId` = ?",
+            "SELECT u.`id`,u.`firstname`,u.`middelname`,u.`lastname`,u.`email`,u.`mobile`,u.`profile`,f.`departmentId`,f.`designationId` FROM `user` AS u RIGHT JOIN `faculty` AS f ON f.`userId` = u.`id` WHERE u.`deleted` = ? AND u.`orgId` = ?",
             [
                 process.env.NOTDELETED,
                 data?.orgId

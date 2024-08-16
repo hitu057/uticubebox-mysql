@@ -1,4 +1,4 @@
-const { createFee, updateFee, getAllFee, deleteFee, getFeeById } = require("./fee.service")
+const { createFee, updateFee, getAllFee, deleteFee, getFeeById,addOnlinePayment } = require("./fee.service")
 const { encrypt, decrypt } = require("../../enc_dec")
 module.exports = {
     createFee: (req, res) => {
@@ -138,5 +138,28 @@ module.exports = {
                 })
             }
         })
+    },
+    addOnlinePayment: (req, res) => {
+        const body = req?.body
+        try {
+            body.feeId = decrypt(body?.feeId)
+            addOnlinePayment(body, (err, result) => {
+                if (err) {
+                    return res.status(500).json({
+                        success: false,
+                        message: err
+                    })
+                }
+                return res.status(200).json({
+                    success: true,
+                    message: "Payment Added Successfully"
+                })
+            })
+        } catch (error) {
+            return res.status(400).json({
+                success: false,
+                message: "Bad Request"
+            })
+        }
     }
 }

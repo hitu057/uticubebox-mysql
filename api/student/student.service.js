@@ -103,7 +103,7 @@ module.exports = {
                                 return callback(err?.sqlMessage || "Error while updating a student")
                             } else {
                                 pool.query(
-                                    "UPDATE `batch` SET `batchId` = ? , `classId` =?, `semesterId` = ? WHERE `userID` = ? AND `deleted` = ?",
+                                    "UPDATE `batch` SET `batchId` = ? , `classId` =?, `semesterId` = ? WHERE `userId` = ? AND `deleted` = ?",
                                     [
                                         data?.batchId,
                                         data?.classId,
@@ -148,7 +148,7 @@ module.exports = {
     },
     getStudentById: (id, callback) => {
         pool.query(
-            "SELECT u.`id` , u.`firstname`,u.`middelname`,u.`lastname`,u.`email`,u.`mobile`,u.`address`,u.`gender`,u.`dob`,s.`categoryId`,s.`fatherName`,s.`rollNumber`,s.`fatherMobile`,s.`motherName`,s.`motherMobile`,s.`parentEmail`,s.`hostel`,s.`guardianName`,s.`guardianMobile`,s.`roomNumber` FROM `user` u LEFT JOIN `student` s ON s.`userId` = u.`id` WHERE u.`deleted` = ? and u.`id` = ?",
+            "SELECT u.`id` , u.`firstname`,u.`middelname`,u.`lastname`,u.`email`,u.`mobile`,u.`address`,u.`gender`,u.`dob`,s.`categoryId`,s.`fatherName`,s.`rollNumber`,s.`fatherMobile`,s.`motherName`,s.`motherMobile`,s.`parentEmail`,s.`hostel`,s.`guardianName`,s.`guardianMobile`,s.`roomNumber`,b.`batchId`,b.`classId`,b.`semesterId`,u.`profile` FROM `user` u LEFT JOIN `student` s ON s.`userId` = u.`id` LEFT JOIN `batch` b ON b.`userId` = u.`id` WHERE u.`deleted` = ? and u.`id` = ?",
             [
                 process.env.NOTDELETED,
                 id

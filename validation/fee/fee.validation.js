@@ -1,4 +1,4 @@
-const { createFee, updateFee } = require("./fee.schema")
+const { createFee, updateFee ,onlinePayment} = require("./fee.schema")
 
 module.exports = {
     createFeeValidation: (req, res, next) => {
@@ -38,5 +38,24 @@ module.exports = {
                 message: "Something went wrong"
             })
         }
-    }
+    },
+    onlinePaymentValidation: (req, res, next) => {
+        try {
+            const value = onlinePayment.validate(req?.body)
+            if (value?.error) {
+                res.status(400).json({
+                    success: false,
+                    message: value?.error?.details?.[0]?.message
+                })
+            }
+            else
+                next()
+        }
+        catch (err) {
+            res.status(500).json({
+                success: false,
+                message: "Something went wrong"
+            })
+        }
+    },
 }

@@ -20,6 +20,21 @@ module.exports = {
             }
         )
     },
+    addOnlinePayment: (data, callback) => {
+        pool.query(
+            "INSERT INTO `payment` (`orgId`,`feeId`,`amount`,`transactionId`,`crdtBy`) VALUES (?,?,?,?,?)",
+            [
+                data?.orgId,
+                data?.feeId,
+                data?.amount,
+                data?.transactionId,
+                data?.crdtBy
+            ],
+            (error, result) => {
+                return error ? callback(error?.sqlMessage || "Error while adding a fee") : callback(null, result)
+            }
+        )
+    },
     updateFee: (data, id, callback) => {
         pool.query(
             "UPDATE `fee` SET `classId` = ?,`semesterId` =? , `startDate` = ? ,`endDate` = ?,`amount` =?,`title` =?,`description` = ?, `updtBy` = ? WHERE `id` = ?",
