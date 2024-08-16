@@ -1,4 +1,4 @@
-const { createFee, updateFee, getAllFee, deleteFee, getFeeById,addOnlinePayment } = require("./fee.service")
+const { createFee, updateFee, getAllFee, deleteFee, getFeeById,addOnlinePayment, addOfflinePayment,pendingForApproval,approvePayment,rejectPayment } = require("./fee.service")
 const { encrypt, decrypt } = require("../../enc_dec")
 module.exports = {
     createFee: (req, res) => {
@@ -130,7 +130,7 @@ module.exports = {
                 })
             }
             else {
-                result = result.map(item => ({ ...item, id: encrypt(item?.id) }))
+                result = result.map(item => ({ ...item, id: encrypt(item?.id),classId:encrypt(item?.classId),semesterId:encrypt(item?.semesterId) }))
                 return res.status(200).json({
                     success: true,
                     message: result?.length ? "Data Found" : "No Data Found",
@@ -161,5 +161,107 @@ module.exports = {
                 message: "Bad Request"
             })
         }
-    }
+    },
+    addOfflinePayment: (req, res) => {
+        const body = req?.body
+        try {
+            body.feeId = decrypt(body?.feeId)
+            body.document = req?.file?.filename
+            addOfflinePayment(body, (err, result) => {
+                if (err) {
+                    return res.status(500).json({
+                        success: false,
+                        message: err
+                    })
+                }
+                else {
+                    return res.status(200).json({
+                        success: true,
+                        message: "Payment Added Successfully"
+                    })
+                }
+            })
+        } catch (error) {
+            return res.status(400).json({
+                success: false,
+                message: "Bad Request"
+            })
+        }
+    },
+    pendingForApproval: (req, res) => {
+        const body = req?.body
+        try {
+            pendingForApproval(body, (err, result) => {
+                if (err) {
+                    return res.status(500).json({
+                        success: false,
+                        message: err
+                    })
+                }
+                else {
+                    result = result.map(item => ({ ...item, id: encrypt(item?.id),classId:encrypt(item?.classId),semesterId:encrypt(item?.semesterId),document: item?.document ? `${process.env.PAYMENTIMAGE}${item?.document}` : null }))
+                    return res.status(200).json({
+                        success: true,
+                        message: "Offline Payment Data",
+                        data:result
+                    })
+                }
+            })
+        } catch (error) {
+            return res.status(400).json({
+                success: false,
+                message: "Bad Request"
+            })
+        }
+    },
+    approvePayment: (req, res) => {
+        const body = req?.body
+        try {
+            body.id = decrypt(body?.id)
+            approvePayment(body, (err, result) => {
+                if (err) {
+                    return res.status(500).json({
+                        success: false,
+                        message: err
+                    })
+                }
+                else {
+                    return res.status(200).json({
+                        success: true,
+                        message: "Payment Approved Successfully",
+                    })
+                }
+            })
+        } catch (error) {
+            return res.status(400).json({
+                success: false,
+                message: "Bad Request"
+            })
+        }
+    },
+    rejectPayment: (req, res) => {
+        const body = req?.body
+        try {
+            body.id = decrypt(body?.id)
+            rejectPayment(body, (err, result) => {
+                if (err) {
+                    return res.status(500).json({
+                        success: false,
+                        message: err
+                    })
+                }
+                else {
+                    return res.status(200).json({
+                        success: true,
+                        message: "Payment Rejected Successfully",
+                    })
+                }
+            })
+        } catch (error) {
+            return res.status(400).json({
+                success: false,
+                message: "Bad Request"
+            })
+        }
+    },
 }

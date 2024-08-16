@@ -1,4 +1,4 @@
-const { createFee, updateFee ,onlinePayment} = require("./fee.schema")
+const { createFee, updateFee ,onlinePayment,offlinePayment,rejectPayment,approvePayment} = require("./fee.schema")
 
 module.exports = {
     createFeeValidation: (req, res, next) => {
@@ -58,4 +58,61 @@ module.exports = {
             })
         }
     },
+    offlinePaymentValidation: (req, res, next) => {
+        try {
+            const value = offlinePayment.validate(req?.body)
+            if (value?.error) {
+                res.status(400).json({
+                    success: false,
+                    message: value?.error?.details?.[0]?.message
+                })
+            }
+            else
+                next()
+        }
+        catch (err) {
+            res.status(500).json({
+                success: false,
+                message: "Something went wrong"
+            })
+        }
+    },
+    approvePaymentValidation: (req, res, next) => {
+        try {
+            const value = approvePayment.validate(req?.body)
+            if (value?.error) {
+                res.status(400).json({
+                    success: false,
+                    message: value?.error?.details?.[0]?.message
+                })
+            }
+            else
+                next()
+        }
+        catch (err) {
+            res.status(500).json({
+                success: false,
+                message: "Something went wrong"
+            })
+        }
+    },
+    rejectPaymentValidation: (req, res, next) => {
+        try {
+            const value = rejectPayment.validate(req?.body)
+            if (value?.error) {
+                res.status(400).json({
+                    success: false,
+                    message: value?.error?.details?.[0]?.message
+                })
+            }
+            else
+                next()
+        }
+        catch (err) {
+            res.status(500).json({
+                success: false,
+                message: "Something went wrong"
+            })
+        }
+    }
 }

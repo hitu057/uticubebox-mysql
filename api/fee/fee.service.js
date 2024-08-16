@@ -22,16 +22,33 @@ module.exports = {
     },
     addOnlinePayment: (data, callback) => {
         pool.query(
-            "INSERT INTO `payment` (`orgId`,`feeId`,`amount`,`transactionId`,`crdtBy`) VALUES (?,?,?,?,?)",
+            "INSERT INTO `payment` (`orgId`,`feeId`,`amount`,`transactionId`,`paymentStatus`,`crdtBy`) VALUES (?,?,?,?,?,?)",
             [
                 data?.orgId,
                 data?.feeId,
                 data?.amount,
                 data?.transactionId,
+                data?.paymentStatus,
                 data?.crdtBy
             ],
             (error, result) => {
-                return error ? callback(error?.sqlMessage || "Error while adding a fee") : callback(null, result)
+                return error ? callback(error?.sqlMessage || "Error while adding a payment") : callback(null, result)
+            }
+        )
+    },
+    addOfflinePayment: (data, callback) => {
+        pool.query(
+            "INSERT INTO `payment` (`orgId`,`feeId`,`amount`,`document`,`type`,`crdtBy`) VALUES (?,?,?,?,?,?)",
+            [
+                data?.orgId,
+                data?.feeId,
+                data?.amount,
+                data?.document,
+                2,
+                data?.crdtBy
+            ],
+            (error, result) => {
+                return error ? callback(error?.sqlMessage || "Error while adding a payment") : callback(null, result)
             }
         )
     },
@@ -81,7 +98,7 @@ module.exports = {
     },
     getAllFee: (data,callback) => {
         pool.query(
-            "SELECT `id`,`title`,`description`,`startDate`,`endDate`,`amount` FROM `fee` WHERE `deleted` =? AND `orgId` = ?",
+            "SELECT `id`,`title`,`description`,`startDate`,`endDate`,`amount`,`classId`,`semesterId` FROM `fee` WHERE `deleted` =? AND `orgId` = ?",
             [
                 process.env.NOTDELETED,
                 data?.orgId
@@ -90,5 +107,46 @@ module.exports = {
                 return error ? callback(error?.sqlMessage || "Error while fetching a fee") : callback(null, result)
             }
         )
-    }
+    },
+    pendingForApproval: (data,callback) => {
+        pool.query(
+            "SELECT p.`id`,p.`document`,p.`amount`,f.`title`,f.`description`,f.`classId`,f.`semesterId` FROM `payment` p LEFT JOIN `fee` f ON f.`id` = p.`feeId` WHERE p.`deleted` =? AND p.`paymentStatus` = ? AND p.`type` = ? AND p.`orgId` = ?",
+            [
+                process.env.NOTDELETED,
+                process.env.NOTDELETED,
+                2,
+                data?.orgId
+            ],
+            (error, result) => {
+                return error ? callback(error?.sqlMessage || "Error while fetching a payment") : callback(null, result)
+            }
+        )
+    },
+    rejectPayment: (data, callback) => {
+        pool.query(
+            "UPDATE `payment` SET `paymentStatus` = ?,`reason` = ?,`updtBy` = ? WHERE `id` = ?",
+            [
+                2,
+                data?.reason,
+                data?.crdtBy,
+                data?.id
+            ],
+            (error, result) => {
+                return error ? callback(error?.sqlMessage || "Error while rejecting payment") : callback(null, result)
+            }
+        )
+    },
+    approvePayment: (data, callback) => {
+        pool.query(
+            "UPDATE `payment` SET `paymentStatus` = ?,`updtBy` = ? WHERE `id` = ?",
+            [
+                1,
+                data?.crdtBy,
+                data?.id
+            ],
+            (error, result) => {
+                return error ? callback(error?.sqlMessage || "Error while approving payment") : callback(null, result)
+            }
+        )
+    },
 }
