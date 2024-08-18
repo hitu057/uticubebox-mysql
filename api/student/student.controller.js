@@ -38,6 +38,7 @@ module.exports = {
                 body.categoryId = decrypt(body?.categoryId)
                 body.classId = decrypt(body?.classId)
                 body.semesterId = decrypt(body?.semesterId)
+                body.batchId = decrypt(body?.batchId)
                 body.password = body?.password ? encrypt(body?.password) : ""
                 updateStudent(body, id, (err, result) => {
                     if (err) {
