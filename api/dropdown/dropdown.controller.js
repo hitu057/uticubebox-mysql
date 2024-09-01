@@ -1,4 +1,4 @@
-const { createDropdown, updateDropdown, getAllDropdownByGroup, getAllDropdown, deleteDropdown, getDropdownById, getAllDropdownGroup } = require("./dropdown.service")
+const { createDropdown, updateDropdown, getAllDropdownByGroup, getAllDropdown, deleteDropdown, getDropdownById, getAllDropdownGroup,getStudentlist } = require("./dropdown.service")
 const { encrypt, decrypt } = require("../../enc_dec")
 module.exports = {
     createDropdown: (req, res) => {
@@ -169,6 +169,28 @@ module.exports = {
     getAllDropdownGroup: (req, res) => {
         const body = req?.body
         getAllDropdownGroup(body,(error, result) => {
+            if (error) {
+                return res.status(500).json({
+                    success: false,
+                    message: error
+                })
+            }
+            else {
+                result = result.map(item => ({ ...item, id: encrypt(item?.id) }))
+                return res.status(200).json({
+                    success: true,
+                    message: result?.length ? "Data Found" : "No Data Found",
+                    result: result
+                })
+            }
+        })
+    },
+    getStudentlist: (req, res) => {
+        const body = req?.body
+        body.classId = decrypt(body?.classId)
+        body.semesterId = decrypt(body?.semesterId)
+        body.batchId = decrypt(body?.batchId)
+        getStudentlist(body,(error, result) => {
             if (error) {
                 return res.status(500).json({
                     success: false,

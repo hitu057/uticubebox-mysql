@@ -93,5 +93,23 @@ module.exports = {
                     return callback(null, result)
             }
         )
-    }
+    },
+    getStudentlist: (data,callback) => {
+        pool.query(
+            "SELECT u.`id`,u.`firstname`,u.`middelname`,u.`lastname` FROM `batch` AS b LEFT JOIN `user` AS u ON u.`id` = b.`userId` WHERE b.`deleted` = ? AND u.`orgId` = ? AND b.`classId` = ? AND b.`semesterId` = ? AND b.`batchId` = ?",
+            [
+                process.env.NOTDELETED,
+                data?.orgId,
+                data?.classId,
+                data?.semesterId,
+                data?.batchId
+            ],
+            (error, result) => {
+                if (error)
+                    return callback(error?.sqlMessage || "Error while fetching a student")
+                else
+                    return callback(null, result)
+            }
+        )
+    },
 }
