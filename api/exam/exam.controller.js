@@ -14,7 +14,7 @@ module.exports = {
                         message: err
                     })
                 }
-                result = result.map(item => ({ ...item, id: encrypt(item?.id) }))
+                result = result.map(item => ({ ...item, id: encrypt(item?.id),hallTicket:encrypt(item?.hallTicket) }))
                 return res.status(200).json({
                     success: true,
                     message: "Student List",
