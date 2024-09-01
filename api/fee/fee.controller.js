@@ -291,5 +291,5 @@ module.exports = {
                 message: "Bad Request"
             })
         }
-    },
+    }
 }

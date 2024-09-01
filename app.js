@@ -18,6 +18,7 @@ app.use("/attendanceTimeTable", require("./api/attendanceTimeTable/attendanceTim
 app.use("/fee", require("./api/fee/fee.router"))
 app.use("/logBook", require("./api/logBook/logBook.router"))
 app.use("/examTimeTable", require("./api/examTimeTable/examTimeTable.router"))
+app.use("/exam", require("./api/exam/exam.router"))
 
 app.listen(process.env.PORT, () => {
     console.log("server is running on PORT", process.env.PORT)
