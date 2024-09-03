@@ -26,5 +26,11 @@ const schema = {
         timeTableId:joi.string().required(),
         studentData: joi.array().items(examAttendanceSchema).required()
     }),
+    studentListForAttendance: joi.object({
+        orgId: joi.string().required(),
+        crdtBy: joi.string().required(),
+        classId:joi.string().required(),
+        semesterId:joi.string().required()
+    }),
 }
 module.exports = schema

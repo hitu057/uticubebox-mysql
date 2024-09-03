@@ -1,4 +1,4 @@
-const { studentList, generateHallTicket, examAttendance } = require("./exam.schema")
+const { studentList, generateHallTicket, examAttendance,studentListForAttendance } = require("./exam.schema")
 
 module.exports = {
     studentListValidation: (req, res, next) => {
@@ -42,6 +42,25 @@ module.exports = {
     examAttendanceValidation: (req, res, next) => {
         try {
             const value = examAttendance.validate(req?.body)
+            if (value?.error) {
+                res.status(400).json({
+                    success: false,
+                    message: value?.error?.details?.[0]?.message
+                })
+            }
+            else
+                next()
+        }
+        catch (err) {
+            res.status(500).json({
+                success: false,
+                message: "Something went wrong"
+            })
+        }
+    },
+    studentListForAttendanceValidation: (req, res, next) => {
+        try {
+            const value = studentListForAttendance.validate(req?.body)
             if (value?.error) {
                 res.status(400).json({
                     success: false,

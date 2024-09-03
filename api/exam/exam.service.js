@@ -21,6 +21,20 @@ module.exports = {
             }
         )
     },
+    studentListForAttendance: (data, callback) => {
+        pool.query(
+            "SELECT u.`id`,u.`firstname`,u.`middelname`,u.`lastname`,u.`profile`,s.`rollNumber` FROM `hallTicket` AS h LEFT JOIN `user` AS u ON u.`id` = h.`userId` LEFT JOIN `student` AS s ON s.`userId` = u.`id` WHERE h.`orgId` = ? AND h.`classId` = ? AND h.`semesterId` = ? AND h.`deleted` = ?",
+            [
+                data?.orgId,
+                data?.classId,
+                data?.semesterId,
+                process.env.NOTDELETED
+            ],
+            (error, result) => {
+                return error ? callback(error?.sqlMessage || "Error while fetching student list") : callback(null, result)
+            }
+        )
+    },
     generateHallTicket: (data, callback) => {
         pool.query(
             "INSERT INTO `hallTicket` (`orgId`,`userId`,`classId`,`semesterId`,`venue`,`crdtBy`) VALUES (?,?,?,?,?,?)",
