@@ -44,7 +44,7 @@ module.exports = {
                     })
                 }
                 else {
-                    result = result.map(item => ({ ...item, id: encrypt(item?.id) }))
+                    result = result.map(item => ({ ...item, id: encrypt(item?.id),image: item?.image ? `${process.env.ORGANISATIONIMAGE}${item?.image}` : null }))
                     return res.status(200).json({
                         success: true,
                         message: "Organisation Data",

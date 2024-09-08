@@ -3,7 +3,7 @@ const pool = require("../../config/database")
 module.exports = {
     organisation: (callback) => {
         pool.query(
-            "SELECT `id`,`name` FROM `organisation` WHERE `deleted` = ?",
+            "SELECT `id`,`name`,`image` FROM `organisation` WHERE `deleted` = ?",
             [
                 process.env.NOTDELETED
             ],

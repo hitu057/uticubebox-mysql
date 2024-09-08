@@ -1,4 +1,4 @@
-const { verifyFaculty, startAttendance, stopAttendance, manualAttendance, autoAttendance, studentList, verifyStudent, viewAttendance } = require("./attendance.schema")
+const { verifyFaculty, startAttendance, stopAttendance, manualAttendance, autoAttendance, studentList, verifyStudent, viewAttendance,viewSingleAttendance } = require("./attendance.schema")
 
 module.exports = {
     verifyFacultyValidation: (req, res, next) => {
@@ -137,6 +137,25 @@ module.exports = {
     viewAttendanceValidation: (req, res, next) => {
         try {
             const value = viewAttendance.validate(req?.body)
+            if (value?.error) {
+                res.status(400).json({
+                    success: false,
+                    message: value?.error?.details?.[0]?.message
+                })
+            }
+            else
+                next()
+        }
+        catch (err) {
+            res.status(500).json({
+                success: false,
+                message: "Something went wrong"
+            })
+        }
+    },
+    viewSingleAttendanceValidation: (req, res, next) => {
+        try {
+            const value = viewSingleAttendance.validate(req?.body)
             if (value?.error) {
                 res.status(400).json({
                     success: false,

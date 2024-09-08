@@ -1,4 +1,4 @@
-const { verifyFaculty, startAttendance, stopAttendance, markAttendance, studentList, verifyStudent, viewAttendance } = require("./attendance.service")
+const { verifyFaculty, startAttendance, stopAttendance, markAttendance, studentList, verifyStudent, viewAttendance,viewSingleAttendance } = require("./attendance.service")
 const { decrypt, encrypt } = require("../../enc_dec")
 module.exports = {
     verifyFaculty: (req, res) => {
@@ -209,8 +209,36 @@ module.exports = {
             body.userId = decrypt(body?.userId)
             body.semesterId = decrypt(body?.semesterId)
             body.classId = decrypt(body?.classId)
-            body.password = encrypt(body?.password)
             viewAttendance(body, (err, result) => {
+                if (err) {
+                    return res.status(500).json({
+                        success: false,
+                        message: err
+                    })
+                }
+                result = result.map(item => ({ ...item, id: encrypt(item?.id) }))
+                return res.status(200).json({
+                    success: true,
+                    message: "Attendance data",
+                    result: result
+                })
+            })
+        } catch (error) {
+            return res.status(400).json({
+                success: false,
+                message: "Bad Request"
+            })
+        }
+    },
+    viewSingleAttendance: (req, res) => {
+        const body = req?.body
+        try {
+            body.departmentId = decrypt(body?.departmentId)
+            body.userId = decrypt(body?.userId)
+            body.semesterId = decrypt(body?.semesterId)
+            body.classId = decrypt(body?.classId)
+            body.studentId = decrypt(body?.studentId)
+            viewSingleAttendance(body, (err, result) => {
                 if (err) {
                     return res.status(500).json({
                         success: false,

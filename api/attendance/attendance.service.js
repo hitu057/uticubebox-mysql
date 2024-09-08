@@ -194,7 +194,7 @@ module.exports = {
     },
     viewAttendance: (data, callback) => {
         pool.query(
-            "SELECT u.`id`, u.`firstname`,u.`middelname`,u.`lastname`, COUNT(a.`id`) AS totalClasses, SUM(CASE WHEN a.`isPresent` = 1 THEN 1 ELSE 0 END) AS presentCount,s.`rollNumber` FROM `attendanceTimeTable` at LEFT JOIN `attendance` a ON at.`id` = a.`timeTableId` LEFT JOIN `user` u ON u.`id` = at.`userId` LEFT JOIN `student` AS s ON s.`userId` = u.`id` WHERE at.`orgId` = ? AND at.`classId` = ? AND at.`semesterId` = ? AND at.`lectureDate` between ? AND ? AND at.`deleted` = ? GROUP BY at.`id` , s.`rollNumber`",
+            "SELECT u.`id`, u.`firstname`,u.`middelname`,u.`lastname`, COUNT(a.`id`) AS totalClasses, SUM(CASE WHEN a.`isPresent` = 1 THEN 1 ELSE 0 END) AS presentCount,s.`rollNumber` FROM `attendanceTimeTable` at LEFT JOIN `attendance` a ON at.`id` = a.`timeTableId` LEFT JOIN `user` u ON u.`id` = a.`userId` LEFT JOIN `student` AS s ON s.`userId` = u.`id` WHERE at.`orgId` = ? AND at.`classId` = ? AND at.`semesterId` = ? AND at.`lectureDate` between ? AND ? AND at.`deleted` = ? GROUP BY at.`id` , s.`rollNumber`",
             [
                 data?.orgId,
                 data?.classId,
@@ -202,6 +202,23 @@ module.exports = {
                 data?.startDate,
                 data?.endDate,
                 process.env.NOTDELETED
+            ],
+            (error, result) => {
+                return error ? callback(error?.sqlMessage || 'Error while fetching attendance') : callback(null, result)
+            }
+        )
+    },
+    viewSingleAttendance: (data, callback) => {
+        pool.query(
+            "SELECT u.`id`, u.`firstname` AS sfirstname,u.`middelname` AS smiddelname,u.`lastname` AS slastname, f.`firstname` AS ffirstname,f.`middelname` AS fmiddelname,f.`lastname` AS flastname,a.`isPresent`,sem.`name` AS semesterName,batch.`name` AS batchName,department.`name` AS departmentName, s.`rollNumber`,DATE_FORMAT(a.`crdtDate`, '%Y-%m-%d') AS markedDate,DATE_FORMAT(a.`crdtDate`, '%h:%i %p') AS markedTime,a.`remark` FROM `attendanceTimeTable` at LEFT JOIN `attendance` a ON at.`id` = a.`timeTableId` LEFT JOIN `user` f ON f.`id` = at.`userId` LEFT JOIN `user` u ON u.`id` = a.`userId` LEFT JOIN `student` AS s ON s.`userId` = u.`id` LEFT JOIN `batch` AS b ON b.`userId` = u.`id` LEFT JOIN `dropdown` AS batch ON batch.`id` = b.`batchId` LEFT JOIN `dropdown` AS department ON department.`id` = at.`departmentId` LEFT JOIN `semester` AS sem ON sem.`id` = at.`semesterId` WHERE at.`orgId` = ? AND at.`classId` = ? AND at.`semesterId` = ? AND at.`lectureDate` between ? AND ? AND at.`deleted` = ? AND a.`userId` = ?",
+            [
+                data?.orgId,
+                data?.classId,
+                data?.semesterId,
+                data?.startDate,
+                data?.endDate,
+                process.env.NOTDELETED,
+                data?.studentId
             ],
             (error, result) => {
                 return error ? callback(error?.sqlMessage || 'Error while fetching attendance') : callback(null, result)

@@ -80,5 +80,14 @@ const schema = {
         startDate:joi.date().required(),
         endDate:joi.date().required()
     }),
+    viewSingleAttendance: joi.object({
+        orgId: joi.string().required(),
+        crdtBy: joi.string().required(),
+        classId:joi.string().allow('').allow(null),
+        semesterId:joi.string().required(),
+        studentId:joi.string().required(),
+        startDate:joi.date().required(),
+        endDate:joi.date().required()
+    }),
 }
 module.exports = schema
