@@ -194,7 +194,7 @@ module.exports = {
     },
     viewAttendance: (data, callback) => {
         pool.query(
-            "SELECT u.`id`, u.`firstname`,u.`middelname`,u.`lastname`, COUNT(a.`id`) AS totalClasses, SUM(CASE WHEN a.`isPresent` = 1 THEN 1 ELSE 0 END) AS presentCount,s.`rollNumber` FROM `attendanceTimeTable` at LEFT JOIN `attendance` a ON at.`id` = a.`timeTableId` LEFT JOIN `user` u ON u.`id` = a.`userId` LEFT JOIN `student` AS s ON s.`userId` = u.`id` WHERE at.`orgId` = ? AND at.`classId` = ? AND at.`semesterId` = ? AND at.`lectureDate` between ? AND ? AND at.`deleted` = ? GROUP BY a.`id` , s.`rollNumber`,at.`id`",
+            "SELECT u.`id`, u.`firstname`,u.`middelname`,u.`lastname`, COUNT(a.`id`) AS totalClasses, SUM(CASE WHEN a.`isPresent` = 1 THEN 1 ELSE 0 END) AS presentCount,s.`rollNumber` FROM `attendanceTimeTable` at LEFT JOIN `attendance` a ON at.`id` = a.`timeTableId` LEFT JOIN `user` u ON u.`id` = a.`userId` LEFT JOIN `student` AS s ON s.`userId` = u.`id` WHERE at.`orgId` = ? AND at.`classId` = ? AND at.`semesterId` = ? AND at.`lectureDate` between ? AND ? AND at.`deleted` = ? GROUP BY u.`id`, s.`rollNumber`, u.`firstname`, u.`middelname`, u.`lastname`",
             [
                 data?.orgId,
                 data?.classId,
