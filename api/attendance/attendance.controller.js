@@ -237,7 +237,6 @@ module.exports = {
             body.userId = decrypt(body?.userId)
             body.semesterId = decrypt(body?.semesterId)
             body.classId = decrypt(body?.classId)
-            body.studentId = decrypt(body?.studentId)
             viewSingleAttendance(body, (err, result) => {
                 if (err) {
                     return res.status(500).json({

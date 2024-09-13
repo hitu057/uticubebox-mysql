@@ -85,7 +85,6 @@ const schema = {
         crdtBy: joi.string().required(),
         classId:joi.string().allow('').allow(null),
         semesterId:joi.string().required(),
-        studentId:joi.string().required(),
         startDate:joi.date().required(),
         endDate:joi.date().required()
     }),
