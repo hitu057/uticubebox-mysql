@@ -210,46 +210,7 @@ module.exports = {
     },
     viewSingleAttendance: (data, callback) => {
         pool.query(
-            `SELECT 
-            u.\`id\`, 
-            u.\`firstname\` AS sfirstname,
-            u.\`middelname\` AS smiddelname,
-            u.\`lastname\` AS slastname, 
-            f.\`firstname\` AS ffirstname,
-            f.\`middelname\` AS fmiddelname,
-            f.\`lastname\` AS flastname,
-            a.\`isPresent\`,
-            sem.\`name\` AS semesterName,
-            batch.\`name\` AS batchName,
-            department.\`name\` AS departmentName,
-            s.\`rollNumber\`,
-            DATE_FORMAT(a.\`crdtDate\`, '%Y-%m-%d') AS markedDate,
-            DATE_FORMAT(a.\`crdtDate\`, '%h:%i %p') AS markedTime,
-            a.\`remark\`
-        FROM 
-            \`attendanceTimeTable\` at 
-        INNER JOIN 
-            \`attendance\` a ON at.\`id\` = a.\`timeTableId\` 
-        INNER JOIN 
-            \`user\` u ON u.\`id\` = a.\`userId\` 
-        LEFT JOIN 
-            \`user\` f ON f.\`id\` = at.\`userId\` 
-        LEFT JOIN 
-            \`student\` s ON s.\`userId\` = u.\`id\` 
-        LEFT JOIN 
-            \`batch\` b ON b.\`userId\` = u.\`id\` 
-        LEFT JOIN 
-            \`dropdown\` batch ON batch.\`id\` = b.\`batchId\` 
-        LEFT JOIN 
-            \`dropdown\` department ON department.\`id\` = at.\`departmentId\` 
-        LEFT JOIN 
-            \`semester\` sem ON sem.\`id\` = at.\`semesterId\` 
-        WHERE 
-            at.\`orgId\` = ? AND 
-            at.\`classId\` = ? AND 
-            at.\`semesterId\` = ? AND 
-            at.\`lectureDate\` BETWEEN ? AND ? AND 
-            at.\`deleted\` = ?;`,
+            `SELECT u.\`id\`, u.\`firstname\` AS sfirstname, u.\`middelname\` AS smiddelname, u.\`lastname\` AS slastname, f.\`firstname\` AS ffirstname, f.\`middelname\` AS fmiddelname, f.\`lastname\` AS flastname, a.\`isPresent\`, sem.\`name\` AS semesterName, batch.\`name\` AS batchName, department.\`name\` AS departmentName, s.\`rollNumber\`, DATE_FORMAT(a.\`crdtDate\`, '%Y-%m-%d') AS markedDate, DATE_FORMAT(a.\`crdtDate\`, '%h:%i %p') AS markedTime, a.\`remark\` FROM \`attendanceTimeTable\` at INNER JOIN \`attendance\` a ON at.\`id\` = a.\`timeTableId\` INNER JOIN \`user\` u ON u.\`id\` = a.\`userId\` LEFT JOIN \`user\` f ON f.\`id\` = at.\`userId\` LEFT JOIN \`student\` s ON s.\`userId\` = u.\`id\` LEFT JOIN \`batch\` b ON b.\`userId\` = u.\`id\` LEFT JOIN \`dropdown\` batch ON batch.\`id\` = b.\`batchId\` LEFT JOIN \`dropdown\` department ON department.\`id\` = at.\`departmentId\` LEFT JOIN \`semester\` sem ON sem.\`id\` = at.\`semesterId\` WHERE at.\`orgId\` = ? AND at.\`classId\` = ? AND at.\`semesterId\` = ? AND at.\`lectureDate\` BETWEEN ? AND ? AND at.\`deleted\` = ?`,
             [
                 data?.orgId,
                 data?.classId,
