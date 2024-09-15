@@ -3,12 +3,13 @@ const pool = require("../../config/database")
 module.exports = {
     createEvent: (data, callback) => {
         pool.query(
-            "INSERT INTO `event` (`orgId`,`title`,`description`,`startDate`,`endDate`,`crdtBy`) VALUES (?,?,?,?,?,?)",
+            "INSERT INTO `event` (`orgId`,`title`,`description`,`startDate`,`showDashboard`,`endDate`,`crdtBy`) VALUES (?,?,?,?,?,?,?)",
             [
                 data?.orgId,
                 data?.title,
                 data?.description,
                 data?.startDate,
+                data?.showDashboard,
                 data?.endDate,
                 data?.crdtBy
             ],
@@ -19,12 +20,13 @@ module.exports = {
     },
     updateEvent: (data, id, callback) => {
         pool.query(
-            "UPDATE `event` SET `title` = ?, `description` = ? , `startDate` = ? ,`endDate` = ?, `updtBy` = ? WHERE `id` = ?",
+            "UPDATE `event` SET `title` = ?, `description` = ? , `startDate` = ? ,`endDate` = ?,`showDashboard` = ?, `updtBy` = ? WHERE `id` = ?",
             [
                 data?.title,
                 data?.description,
                 data?.startDate,
                 data?.endDate,
+                data?.showDashboard,
                 data?.crdtBy,
                 id
             ],
@@ -48,7 +50,7 @@ module.exports = {
     },
     getEventById: (id, callback) => {
         pool.query(
-            "SELECT `id` , `title`, `description`, `startDate`,`endDate` FROM `event` WHERE `deleted` = ? and `id` = ?",
+            "SELECT `id` , `title`, `description`, `startDate`,`endDate`,`showDashboard` FROM `event` WHERE `deleted` = ? and `id` = ?",
             [
                 process.env.NOTDELETED,
                 id
@@ -60,7 +62,7 @@ module.exports = {
     },
     getAllEvent: (data,callback) => {
         pool.query(
-            "SELECT `id` , `title`, `description`, `startDate`,`endDate` FROM `event` WHERE `deleted` = ? AND `orgId` = ?",
+            "SELECT `id` , `title`, `description`, `startDate`,`endDate`,`showDashboard` FROM `event` WHERE `deleted` = ? AND `orgId` = ?",
             [
                 process.env.NOTDELETED,
                 data?.orgId
