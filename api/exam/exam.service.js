@@ -37,9 +37,10 @@ module.exports = {
     },
     generateHallTicket: (data, callback) => {
         pool.query(
-            "INSERT INTO `hallTicket` (`orgId`,`userId`,`classId`,`semesterId`,`venue`,`crdtBy`) VALUES (?,?,?,?,?,?)",
+            "INSERT INTO `hallTicket` (`orgId`,`batchId`,`userId`,`classId`,`semesterId`,`venue`,`crdtBy`) VALUES (?,?,?,?,?,?,?)",
             [
                 data?.orgId,
+                data?.batchId,
                 data?.studentId,
                 data?.classId,
                 data?.semesterId,

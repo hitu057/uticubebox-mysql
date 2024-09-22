@@ -3,12 +3,13 @@ const pool = require("../../config/database")
 module.exports = {
     createExamTimeTable: (data, callback) => {
         pool.query(
-            "INSERT INTO `examTimeTable` (`orgId`,`userId`,`classId`,`semesterId`,`departmentId`,`examDate`,`startTime`,`endTime`,`crdtBy`) VALUES (?,?,?,?,?,?,?,?,?)",
+            "INSERT INTO `examTimeTable` (`orgId`,`userId`,`classId`,`semesterId`,`batchId`,`departmentId`,`examDate`,`startTime`,`endTime`,`crdtBy`) VALUES (?,?,?,?,?,?,?,?,?,?)",
             [
                 data?.orgId,
                 data?.userId,
                 data?.classId,
                 data?.semesterId,
+                data?.batchId,
                 data?.departmentId,
                 data?.examDate,
                 data?.startTime,
@@ -22,11 +23,12 @@ module.exports = {
     },
     updateExamTimeTable: (data, id, callback) => {
         pool.query(
-            "UPDATE `examTimeTable` SET `userId` = ?, `classId` = ?,`semesterId` =? , `departmentId` = ?,`examDate` = ?,`startTime` =?,`endTime` =?, `updtBy` = ? WHERE `id` = ?",
+            "UPDATE `examTimeTable` SET `userId` = ?, `classId` = ?,`semesterId` =?,`batchId` =? , `departmentId` = ?,`examDate` = ?,`startTime` =?,`endTime` =?, `updtBy` = ? WHERE `id` = ?",
             [
                 data?.userId,
                 data?.classId,
                 data?.semesterId,
+                data?.batchId,
                 data?.departmentId,
                 data?.examDate,
                 data?.startTime,
@@ -54,7 +56,7 @@ module.exports = {
     },
     getExamTimeTableById: (id, callback) => {
         pool.query(
-            "SELECT `id`, `userId`,`semesterId`, `classId`, `departmentId`,`examDate`,`startTime`,`endTime` FROM `examTimeTable` WHERE `deleted` = ? and `id` = ?",
+            "SELECT `id`, `userId`,`semesterId`, `classId`, `departmentId`,`batchId`,`examDate`,`startTime`,`endTime` FROM `examTimeTable` WHERE `deleted` = ? and `id` = ?",
             [
                 process.env.NOTDELETED,
                 id

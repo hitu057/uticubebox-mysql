@@ -8,6 +8,7 @@ module.exports = {
             body.userId = decrypt(body?.userId)
             body.semesterId = decrypt(body?.semesterId)
             body.classId = decrypt(body?.classId)
+            body.batchId = decrypt(body?.batchId)
             createAttendanceTimeTable(body, (err, result) => {
                 if (err) {
                     return res.status(500).json({
@@ -36,6 +37,7 @@ module.exports = {
                 body.userId = decrypt(body?.userId)
                 body.semesterId = decrypt(body?.semesterId)
                 body.classId = decrypt(body?.classId)
+                body.batchId = decrypt(body?.batchId)
                 updateAttendanceTimeTable(body, id, (err, result) => {
                     if (err) {
                         return res.status(500).json({
@@ -108,7 +110,7 @@ module.exports = {
                     })
                 }
                 else {
-                    result = result.map(item => ({ ...item, id: encrypt(item?.id),userId:encrypt(item?.userId),semesterId:encrypt(item?.semesterId),classId:encrypt(item?.classId),departmentId:encrypt(item?.departmentId) }))
+                    result = result.map(item => ({ ...item, id: encrypt(item?.id),userId:encrypt(item?.userId),semesterId:encrypt(item?.semesterId),classId:encrypt(item?.classId),departmentId:encrypt(item?.departmentId),batchId:encrypt(item?.batchId) }))
                     return res.status(200).json({
                         success: true,
                         message: result?.length ? "Data Found" : "No Data Found",

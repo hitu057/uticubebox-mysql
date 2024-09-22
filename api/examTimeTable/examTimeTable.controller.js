@@ -7,6 +7,7 @@ module.exports = {
             body.departmentId = decrypt(body?.departmentId)
             body.userId = decrypt(body?.userId)
             body.semesterId = decrypt(body?.semesterId)
+            body.batchId = decrypt(body?.batchId)
             body.classId = decrypt(body?.classId)
             createExamTimeTable(body, (err, result) => {
                 if (err) {
@@ -35,6 +36,7 @@ module.exports = {
                 body.departmentId = decrypt(body?.departmentId)
                 body.userId = decrypt(body?.userId)
                 body.semesterId = decrypt(body?.semesterId)
+                body.batchId = decrypt(body?.batchId)
                 body.classId = decrypt(body?.classId)
                 updateExamTimeTable(body, id, (err, result) => {
                     if (err) {
@@ -108,7 +110,7 @@ module.exports = {
                     })
                 }
                 else {
-                    result = result.map(item => ({ ...item, id: encrypt(item?.id),userId:encrypt(item?.userId),semesterId:encrypt(item?.semesterId),classId:encrypt(item?.classId),departmentId:encrypt(item?.departmentId)}))
+                    result = result.map(item => ({ ...item, id: encrypt(item?.id),userId:encrypt(item?.userId),semesterId:encrypt(item?.semesterId),classId:encrypt(item?.classId),departmentId:encrypt(item?.departmentId),batchId:encrypt(item?.batchId)}))
                     return res.status(200).json({
                         success: true,
                         message: result?.length ? "Data Found" : "No Data Found",

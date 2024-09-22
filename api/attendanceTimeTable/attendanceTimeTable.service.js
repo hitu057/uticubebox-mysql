@@ -3,13 +3,14 @@ const pool = require("../../config/database")
 module.exports = {
     createAttendanceTimeTable: (data, callback) => {
         pool.query(
-            "INSERT INTO `attendanceTimeTable` (`orgId`,`userId`,`classId`,`semesterId`,`departmentId`,`lectureDate`,`startTime`,`endTime`,`crdtBy`) VALUES (?,?,?,?,?,?,?,?,?)",
+            "INSERT INTO `attendanceTimeTable` (`orgId`,`userId`,`classId`,`semesterId`,`departmentId`,`batchId`,`lectureDate`,`startTime`,`endTime`,`crdtBy`) VALUES (?,?,?,?,?,?,?,?,?,?)",
             [
                 data?.orgId,
                 data?.userId,
                 data?.classId,
                 data?.semesterId,
                 data?.departmentId,
+                data?.batchId,
                 data?.lectureDate,
                 data?.startTime,
                 data?.endTime,
@@ -22,11 +23,12 @@ module.exports = {
     },
     updateAttendanceTimeTable: (data, id, callback) => {
         pool.query(
-            "UPDATE `attendanceTimeTable` SET `userId` = ?, `classId` = ?,`semesterId` =? , `departmentId` = ? ,`lectureDate` = ?,`startTime` =?,`endTime` =?, `updtBy` = ? WHERE `id` = ?",
+            "UPDATE `attendanceTimeTable` SET `userId` = ?, `classId` = ?,`semesterId` =?,`batchId` =? , `departmentId` = ? ,`lectureDate` = ?,`startTime` =?,`endTime` =?, `updtBy` = ? WHERE `id` = ?",
             [
                 data?.userId,
                 data?.classId,
                 data?.semesterId,
+                data?.batchId,
                 data?.departmentId,
                 data?.lectureDate,
                 data?.startTime,
@@ -54,7 +56,7 @@ module.exports = {
     },
     getAttendanceTimeTableById: (id, callback) => {
         pool.query(
-            "SELECT `id`, `userId`,`semesterId`, `classId`, `departmentId`,`lectureDate`,`startTime`,`endTime` FROM `attendanceTimeTable` WHERE `deleted` = ? and `id` = ?",
+            "SELECT `id`, `userId`,`semesterId`, `classId`, `departmentId`,`batchId`,`lectureDate`,`startTime`,`endTime` FROM `attendanceTimeTable` WHERE `deleted` = ? and `id` = ?",
             [
                 process.env.NOTDELETED,
                 id

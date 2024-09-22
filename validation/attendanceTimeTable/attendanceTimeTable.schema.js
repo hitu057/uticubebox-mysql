@@ -7,6 +7,7 @@ const schema = {
         classId: joi.string().required(),
         departmentId: joi.string().required(),
         semesterId: joi.string().required(),
+        batchId: joi.string().required(),
         lectureDate: joi.date().required(),
         startTime:joi.string().required(),
         endTime:joi.string().required()
@@ -18,6 +19,7 @@ const schema = {
         classId: joi.string().required(),
         departmentId: joi.string().required(),
         semesterId: joi.string().required(),
+        batchId: joi.string().required(),
         lectureDate: joi.date().required(),
         startTime:joi.string().required(),
         endTime:joi.string().required()
