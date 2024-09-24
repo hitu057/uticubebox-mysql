@@ -3,10 +3,11 @@ const pool = require("../../config/database")
 module.exports = {
     createDepartment: (data, callback) => {
         pool.query(
-            "INSERT INTO `department` (`orgId`,`batchId`,`semesterId`,`departmentId`,`crdtBy`) VALUES (?,?,?,?,?)",
+            "INSERT INTO `department` (`orgId`,`batchId`,`classId`,`semesterId`,`departmentId`,`crdtBy`) VALUES (?,?,?,?,?,?)",
             [
                 data?.orgId,
                 data?.batchId,
+                data?.classId,
                 data?.semesterId,
                 data?.departmentId,
                 data?.crdtBy
@@ -18,10 +19,11 @@ module.exports = {
     },
     updateDepartment: (data, id, callback) => {
         pool.query(
-            "UPDATE `department` SET `batchId` = ?, `semesterId` = ? , `departmentId` = ? , `updtBy` = ? WHERE `id` = ?",
+            "UPDATE `department` SET `batchId` = ?, `semesterId` = ?,`classId` = ? , `departmentId` = ? , `updtBy` = ? WHERE `id` = ?",
             [
                 data?.batchId,
                 data?.semesterId,
+                data?.classId,
                 data?.departmentId,
                 data?.crdtBy,
                 id
@@ -46,7 +48,7 @@ module.exports = {
     },
     getDepartmentById: (id, callback) => {
         pool.query(
-            "SELECT `id` , `batchId`, `semesterId`, `departmentId` FROM `department` WHERE `deleted` = ? and `id` = ?",
+            "SELECT `id` , `batchId`, `semesterId`,`classId`, `departmentId` FROM `department` WHERE `deleted` = ? and `id` = ?",
             [
                 process.env.NOTDELETED,
                 id
@@ -58,7 +60,7 @@ module.exports = {
     },
     getAllDepartment: (data,callback) => {
         pool.query(
-            "SELECT `id` , `batchId`, `semesterId`, `departmentId` FROM `department` WHERE `deleted` = ? AND `orgId` = ?",
+            "SELECT `id` , `batchId`, `semesterId`,`classId`, `departmentId` FROM `department` WHERE `deleted` = ? AND `orgId` = ?",
             [
                 process.env.NOTDELETED,
                 data?.orgId

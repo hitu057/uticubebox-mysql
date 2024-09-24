@@ -35,6 +35,21 @@ module.exports = {
             }
         )
     },
+    viewHallTicket: (data, callback) => {
+        pool.query(
+            "SELECT u.`id`,u.`firstname`,u.`middelname`,u.`lastname`,u.`profile`,s.`rollNumber`,h.`venue`,e.`departmentId`,DATE_FORMAT(e.`examDate`, '%Y-%m-%d') AS examDate,TIME_FORMAT(e.`startTime`, '%r') AS startTime, TIME_FORMAT(e.`endTime`, '%r') AS endTime FROM `hallTicket` AS h LEFT JOIN `examTimeTable` AS e ON e.`classId` = h.`classId` AND e.`semesterId` = h.`semesterId` LEFT JOIN `user` AS u ON u.`id` = h.`userId` LEFT JOIN `student` AS s ON s.`userId` = u.`id` WHERE h.`orgId` = ? AND h.`classId` = ? AND h.`semesterId` = ? AND h.`deleted` = ? AND h.`batchId` = ?",
+            [
+                data?.orgId,
+                data?.classId,
+                data?.semesterId,
+                process.env.NOTDELETED,
+                data?.batchId
+            ],
+            (error, result) => {
+                return error ? callback(error?.sqlMessage || "Error while fetching student list") : callback(null, result)
+            }
+        )
+    },
     generateHallTicket: (data, callback) => {
         pool.query(
             "INSERT INTO `hallTicket` (`orgId`,`batchId`,`userId`,`classId`,`semesterId`,`venue`,`crdtBy`) VALUES (?,?,?,?,?,?,?)",

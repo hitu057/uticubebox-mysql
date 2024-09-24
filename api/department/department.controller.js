@@ -7,6 +7,7 @@ module.exports = {
             body.semesterId = decrypt(body?.semesterId)
             body.departmentId = decrypt(body?.departmentId)
             body.batchId = decrypt(body?.batchId)
+            body.classId = decrypt(body?.classId)
             createDepartment(body, (err, result) => {
                 if (err) {
                     return res.status(500).json({
@@ -34,6 +35,7 @@ module.exports = {
                 body.semesterId = decrypt(body?.semesterId)
                 body.departmentId = decrypt(body?.departmentId)
                 body.batchId = decrypt(body?.batchId)
+                body.classId = decrypt(body?.classId)
                 updateDepartment(body, id, (err, result) => {
                     if (err) {
                         return res.status(500).json({
@@ -106,7 +108,7 @@ module.exports = {
                     })
                 }
                 else {
-                    result = result.map(item => ({ ...item, id: encrypt(item?.id),batchId:encrypt(item?.batchId),semesterId:encrypt(item?.semesterId),departmentId:encrypt(item?.departmentId) }))
+                    result = result.map(item => ({ ...item, id: encrypt(item?.id),batchId:encrypt(item?.batchId),semesterId:encrypt(item?.semesterId),departmentId:encrypt(item?.departmentId),classId:encrypt(item?.classId) }))
                     return res.status(200).json({
                         success: true,
                         message: result?.length ? "Data Found" : "No Data Found",
@@ -132,7 +134,7 @@ module.exports = {
                 })
             }
             else {
-                result = result.map(item => ({ ...item, id: encrypt(item?.id),batchId:encrypt(item?.batchId),semesterId:encrypt(item?.semesterId),departmentId:encrypt(item?.departmentId) }))
+                result = result.map(item => ({ ...item, id: encrypt(item?.id),batchId:encrypt(item?.batchId),semesterId:encrypt(item?.semesterId),departmentId:encrypt(item?.departmentId),classId:encrypt(item?.classId) }))
                 return res.status(200).json({
                     success: true,
                     message: result?.length ? "Data Found" : "No Data Found",

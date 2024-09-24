@@ -5,6 +5,7 @@ const schema = {
         crdtBy: joi.string().required(),
         batchId: joi.string().required(),
         semesterId: joi.string().required(),
+        classId: joi.string().required(),
         departmentId: joi.string().required()
     }),
     updateDepartment: joi.object({
@@ -12,6 +13,7 @@ const schema = {
         crdtBy: joi.string().required(),
         batchId: joi.string().required(),
         semesterId: joi.string().required(),
+        classId: joi.string().required(),
         departmentId: joi.string().required()
     })
 }
