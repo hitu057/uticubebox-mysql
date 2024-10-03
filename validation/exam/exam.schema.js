@@ -37,7 +37,8 @@ const schema = {
         crdtBy: joi.string().required(),
         classId:joi.string().required(),
         batchId:joi.string().required(),
-        semesterId:joi.string().required()
+        semesterId:joi.string().required(),
+        studentId:joi.string().required()
     }),
 }
 module.exports = schema

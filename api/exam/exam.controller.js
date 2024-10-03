@@ -86,6 +86,7 @@ module.exports = {
             body.semesterId = decrypt(body?.semesterId)
             body.classId = decrypt(body?.classId)
             body.batchId = decrypt(body?.batchId)
+            body.studentId = decrypt(body?.studentId)
             viewHallTicket(body, (err, result) => {
                 if (err) {
                     return res.status(500).json({
@@ -97,7 +98,7 @@ module.exports = {
                 return res.status(200).json({
                     success: true,
                     message: "Hall Ticket",
-                    result: result
+                    result: result ? result?.[0] : []
                 })
             })
         } catch (error) {
