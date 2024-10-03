@@ -98,7 +98,7 @@ module.exports = {
                 return res.status(200).json({
                     success: true,
                     message: "Hall Ticket",
-                    result: result ? result?.[0] : []
+                    result: result
                 })
             })
         } catch (error) {

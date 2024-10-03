@@ -37,7 +37,7 @@ module.exports = {
     },
     viewHallTicket: (data, callback) => {
         pool.query(
-            "SELECT u.`id`,u.`firstname`,u.`middelname`,u.`lastname`,u.`profile`,s.`rollNumber`,h.`venue`,e.`departmentId`,DATE_FORMAT(e.`examDate`, '%Y-%m-%d') AS examDate,TIME_FORMAT(e.`startTime`, '%r') AS startTime, TIME_FORMAT(e.`endTime`, '%r') AS endTime FROM `hallTicket` AS h LEFT JOIN `examTimeTable` AS e ON e.`classId` = h.`classId` AND e.`semesterId` = h.`semesterId` LEFT JOIN `user` AS u ON u.`id` = h.`userId` LEFT JOIN `student` AS s ON s.`userId` = u.`id` WHERE h.`orgId` = ? AND h.`classId` = ? AND h.`semesterId` = ? AND h.`deleted` = ? AND h.`batchId` = ? AND h.`userId` = ? GROUP BY h.`id`",
+            "SELECT u.`id`,u.`firstname`,u.`middelname`,u.`lastname`,u.`profile`,s.`rollNumber`,h.`venue`,e.`departmentId`,DATE_FORMAT(e.`examDate`, '%Y-%m-%d') AS examDate,TIME_FORMAT(e.`startTime`, '%r') AS startTime, TIME_FORMAT(e.`endTime`, '%r') AS endTime FROM `hallTicket` AS h LEFT JOIN `examTimeTable` AS e ON e.`classId` = h.`classId` AND e.`semesterId` = h.`semesterId` LEFT JOIN `user` AS u ON u.`id` = h.`userId` LEFT JOIN `student` AS s ON s.`userId` = u.`id` WHERE h.`orgId` = ? AND h.`classId` = ? AND h.`semesterId` = ? AND h.`deleted` = ? AND h.`batchId` = ? AND h.`userId` = ?",
             [
                 data?.orgId,
                 data?.classId,
