@@ -21,6 +21,7 @@ app.use("/examTimeTable", require("./api/examTimeTable/examTimeTable.router"))
 app.use("/exam", require("./api/exam/exam.router"))
 app.use("/event", require("./api/event/event.router"))
 app.use("/department", require("./api/department/department.router"))
+app.use("/result", require("./api/studentResult/studentResult.router"))
 
 app.listen(process.env.PORT, () => {
     console.log("server is running on PORT", process.env.PORT)
