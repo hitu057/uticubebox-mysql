@@ -68,7 +68,7 @@ module.exports = {
     },
     getAllAttendanceTimeTable: (data,callback) => {
         pool.query(
-            "SELECT a.`id` ,u.`firstname`,u.`lastname`, d.`name` AS department,`lectureDate`,`startTime`,`endTime`,`classId`,`semesterId`,`departmentId` FROM `attendanceTimeTable` AS a LEFT JOIN `user` AS u ON u.`id` = a.`userId` LEFT JOIN `dropdown` AS d ON d.`id` = a.`departmentId` WHERE a.`deleted` = ? AND a.`orgId` = ?",
+            "SELECT a.`id` ,u.`firstname`,u.`lastname`,u.id AS facultyId, d.`name` AS department,`lectureDate`,a.`startTime`,a.`endTime`,a.`classId`,a.`semesterId`,a.`departmentId` FROM `attendanceTimeTable` AS a LEFT JOIN `user` AS u ON u.`id` = a.`userId` LEFT JOIN `dropdown` AS d ON d.`id` = a.`departmentId` WHERE a.`deleted` = ? AND a.`orgId` = ?",
             [
                 process.env.NOTDELETED,
                 data?.orgId

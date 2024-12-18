@@ -136,7 +136,7 @@ module.exports = {
                 })
             }
             else {
-                result = result.map(item => ({ ...item, id: encrypt(item?.id),classId:encrypt(item?.classId),departmentId:encrypt(item?.departmentId),semesterId:encrypt(item?.semesterId) }))
+                result = result.map(item => ({ ...item, id: encrypt(item?.id),facultyId:encrypt(item?.facultyId),classId:encrypt(item?.classId),departmentId:encrypt(item?.departmentId),semesterId:encrypt(item?.semesterId) }))
                 return res.status(200).json({
                     success: true,
                     message: result?.length ? "Data Found" : "No Data Found",
