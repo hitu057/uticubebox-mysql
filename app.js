@@ -22,6 +22,7 @@ app.use("/exam", require("./api/exam/exam.router"))
 app.use("/event", require("./api/event/event.router"))
 app.use("/department", require("./api/department/department.router"))
 app.use("/hostel", require("./api/hostel/hostel.router"))
+app.use("/room", require("./api/room/room.router"))
 app.use("/result", require("./api/studentResult/studentResult.router"))
 
 app.listen(process.env.PORT, () => {
