@@ -47,7 +47,7 @@ module.exports = {
                                     } else {
                                         if (result?.insertId) {
                                             connection.query(
-                                                "INSERT INTO `student` (`userId`,`categoryId`,`fatherName`,`rollNumber`,`fatherMobile`,`motherName`,`motherMobile`,`parentEmail`,`hostel`,`guardianName`,`guardianMobile`,`roomNumber`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
+                                                "INSERT INTO `student` (`userId`,`categoryId`,`fatherName`,`rollNumber`,`fatherMobile`,`motherName`,`motherMobile`,`parentEmail`,`hostel`,`guardianName`,`guardianMobile`,`roomNumber`,`checkIn`,`checkOut`,`meals`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                                                 [
                                                     result?.insertId,
                                                     data?.categoryId,
@@ -60,7 +60,10 @@ module.exports = {
                                                     data?.hostel,
                                                     data?.guardianName,
                                                     data?.guardianMobile,
-                                                    data?.roomNumber
+                                                    data?.roomNumber,
+                                                    data?.checkIn,
+                                                    data?.checkOut,
+                                                    data?.meals
                                                 ],
                                                 (err, response) => {
                                                     if (err) {
@@ -168,7 +171,7 @@ module.exports = {
                                     })
                                 } else {
                                     connection.query(
-                                        "UPDATE `student` SET `categoryId` = ?, `fatherName` = ?, `rollNumber` = ?, `fatherMobile` = ?, `motherName` = ?, `motherMobile` = ?, `parentEmail` = ?, `hostel` = ?, `guardianName` = ?, `guardianMobile` = ?, `roomNumber` = ? WHERE userId = ?",
+                                        "UPDATE `student` SET `categoryId` = ?, `fatherName` = ?, `rollNumber` = ?, `fatherMobile` = ?, `motherName` = ?, `motherMobile` = ?, `parentEmail` = ?, `hostel` = ?, `guardianName` = ?, `guardianMobile` = ?, `roomNumber` = ?,`checkIn` = ? , `checkOut` =? , `meals` =? WHERE userId = ?",
                                         [
                                             data?.categoryId,
                                             data?.fatherName,
@@ -180,7 +183,10 @@ module.exports = {
                                             data?.hostel,
                                             data?.guardianName,
                                             data?.guardianMobile,
-                                            data?.roomNumber,
+                                            data?.roomNumber,,
+                                            data?.checkIn,
+                                            data?.checkOut,
+                                            data?.meals,
                                             id
                                         ],
                                         (err, response) => {
@@ -258,7 +264,7 @@ module.exports = {
     },
     getStudentById: (id, callback) => {
         pool.query(
-            "SELECT u.`id` , u.`firstname`,u.`middelname`,u.`lastname`,u.`email`,u.`mobile`,u.`address`,u.`gender`,u.`dob`,s.`categoryId`,s.`fatherName`,s.`rollNumber`,s.`fatherMobile`,s.`motherName`,s.`motherMobile`,s.`parentEmail`,s.`hostel`,s.`guardianName`,s.`guardianMobile`,s.`roomNumber`,b.`batchId`,b.`classId`,b.`semesterId`,u.`profile` FROM `user` u LEFT JOIN `student` s ON s.`userId` = u.`id` LEFT JOIN `batch` b ON b.`userId` = u.`id` WHERE u.`deleted` = ? and u.`id` = ?",
+            "SELECT u.`id` , u.`firstname`,u.`middelname`,u.`lastname`,u.`email`,u.`mobile`,u.`address`,u.`gender`,u.`dob`,s.`categoryId`,s.`fatherName`,s.`rollNumber`,s.`fatherMobile`,s.`motherName`,s.`motherMobile`,s.`parentEmail`,s.`hostel`,s.`guardianName`,s.`guardianMobile`,s.`roomNumber`,b.`batchId`,b.`classId`,b.`semesterId`,u.`profile`,s.`checkIn`,s.`checkOut`,s.`meals` FROM `user` u LEFT JOIN `student` s ON s.`userId` = u.`id` LEFT JOIN `batch` b ON b.`userId` = u.`id` WHERE u.`deleted` = ? and u.`id` = ?",
             [
                 process.env.NOTDELETED,
                 id

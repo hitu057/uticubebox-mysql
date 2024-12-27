@@ -3,7 +3,7 @@ const pool = require("../../config/database")
 module.exports = {
     createHostel: (data, callback) => {
         pool.query(
-            "INSERT INTO `hostel` (`orgId`,`name`,`warden`,`address`,`pincode`,`city`,`state`,`crdtBy`) VALUES (?,?,?,?,?,?,?,?)",
+            "INSERT INTO `hostel` (`orgId`,`name`,`warden`,`address`,`pincode`,`city`,`state`,`policy`,`emergency`,`crdtBy`) VALUES (?,?,?,?,?,?,?,?,?,?)",
             [
                 data?.orgId,
                 data?.name,
@@ -12,6 +12,8 @@ module.exports = {
                 data?.pincode,
                 data?.city,
                 data?.state,
+                data?.policy,
+                data?.emergency,
                 data?.crdtBy
             ],
             (error, result) => {
@@ -21,14 +23,16 @@ module.exports = {
     },
     updateHostel: (data, id, callback) => {
         pool.query(
-            "UPDATE `hostel` SET `name` = ?, `warden` = ?,`address` = ? , `pincode` = ?,`city`= ?,`state` = ? , `updtBy` = ? WHERE `id` = ?",
+            "UPDATE `hostel` SET `name` = ?, `warden` = ?,`address` = ? , `pincode` = ?,`city`= ?,`state` = ?,`policy` = ?,`emergency` =? , `updtBy` = ? WHERE `id` = ?",
             [
                 data?.name,
                 data?.warden,
                 data?.address,
                 data?.pincode,
                 data?.city,
-                data?.state,
+                data?.state,,
+                data?.policy,
+                data?.emergency,
                 data?.crdtBy,
                 id
             ],
@@ -52,7 +56,7 @@ module.exports = {
     },
     getHostelById: (id, callback) => {
         pool.query(
-            "SELECT `id` , `name`, `warden`,`address`, `pincode`,`city`,`state` FROM `hostel` WHERE `deleted` = ? and `id` = ?",
+            "SELECT `id` , `name`, `warden`,`address`, `pincode`,`city`,`state`,`emergency`,`policy` FROM `hostel` WHERE `deleted` = ? and `id` = ?",
             [
                 process.env.NOTDELETED,
                 id
@@ -64,7 +68,7 @@ module.exports = {
     },
     getAllHostel: (data,callback) => {
         pool.query(
-            "SELECT `id` , `name`, `warden`,`address`, `pincode`,`city`,`state` FROM `hostel` WHERE `deleted` = ? AND `orgId` = ?",
+            "SELECT `id` , `name`, `warden`,`address`, `pincode`,`city`,`state`,`emergency`,`policy` FROM `hostel` WHERE `deleted` = ? AND `orgId` = ?",
             [
                 process.env.NOTDELETED,
                 data?.orgId

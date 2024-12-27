@@ -7,6 +7,8 @@ module.exports = {
             body.gender = decrypt(body?.gender)
             body.categoryId = decrypt(body?.categoryId)
             body.batchId = decrypt(body?.batchId)
+            body.hostel = decrypt(body?.hostel)
+            body.roomNumber = decrypt(body?.roomNumber)
             body.password = encrypt(body?.password)
             body.classId = decrypt(body?.classId)
             body.semesterId = decrypt(body?.semesterId)
@@ -39,6 +41,8 @@ module.exports = {
                 body.classId = decrypt(body?.classId)
                 body.semesterId = decrypt(body?.semesterId)
                 body.batchId = decrypt(body?.batchId)
+                body.hostel = decrypt(body?.hostel)
+                body.roomNumber = decrypt(body?.roomNumber)
                 body.password = body?.password ? encrypt(body?.password) : ""
                 updateStudent(body, id, (err, result) => {
                     if (err) {
@@ -112,7 +116,7 @@ module.exports = {
                     })
                 }
                 else {
-                    result = result.map(item => ({ ...item, id: encrypt(item?.id), gender: encrypt(item?.gender), categoryId: encrypt(item?.categoryId),batchId:encrypt(item?.batchId),classId:encrypt(item?.classId),semesterId:encrypt(item?.semesterId),profile: item?.profile ? `${process.env.USERIMAGE}${item?.profile}` : null }))
+                    result = result.map(item => ({ ...item, id: encrypt(item?.id),hostel:encrypt(item?.hostel),roomNumber:encrypt(item?.roomNumber), gender: encrypt(item?.gender), categoryId: encrypt(item?.categoryId),batchId:encrypt(item?.batchId),classId:encrypt(item?.classId),semesterId:encrypt(item?.semesterId),profile: item?.profile ? `${process.env.USERIMAGE}${item?.profile}` : null }))
                     return res.status(200).json({
                         success: true,
                         message: result?.length ? "Data Found" : "No Data Found",
