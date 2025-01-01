@@ -1,4 +1,4 @@
-const { createHostel, updateHostel, getAllHostel, deleteHostel, getHostelById } = require("./hostel.service")
+const { createHostel, updateHostel, getAllHostel, deleteHostel, getHostelById,getDashboard } = require("./hostel.service")
 const { encrypt, decrypt } = require("../../enc_dec")
 module.exports = {
     createHostel: (req, res) => {
@@ -119,6 +119,25 @@ module.exports = {
     getAllHostel: (req, res) => {
         const body = req?.body
         getAllHostel(body, (error, result) => {
+            if (error) {
+                return res.status(500).json({
+                    success: false,
+                    message: error
+                })
+            }
+            else {
+                result = result.map(item => ({ ...item, id: encrypt(item?.id) }))
+                return res.status(200).json({
+                    success: true,
+                    message: result?.length ? "Data Found" : "No Data Found",
+                    result: result
+                })
+            }
+        })
+    },
+    getDashboard: (req, res) => {
+        const body = req?.body
+        getDashboard(body, (error, result) => {
             if (error) {
                 return res.status(500).json({
                     success: false,
