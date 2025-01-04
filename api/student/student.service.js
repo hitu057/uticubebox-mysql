@@ -183,7 +183,7 @@ module.exports = {
                                             data?.hostel,
                                             data?.guardianName,
                                             data?.guardianMobile,
-                                            data?.roomNumber,,
+                                            data?.roomNumber,
                                             data?.checkIn,
                                             data?.checkOut,
                                             data?.meals,
@@ -203,7 +203,7 @@ module.exports = {
                                                         data?.classId,
                                                         data?.semesterId,
                                                         id,
-                                                        process.env.NOTDELETED
+                                                        process?.env?.NOTDELETED
                                                     ],
                                                     (er, res) => {
                                                         if (er) {
