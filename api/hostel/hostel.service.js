@@ -92,7 +92,7 @@ module.exports = {
     },
     getStudentList: (id,data, callback) => {
         pool.query(
-            "SELECT u.`id`,u.`firstname`,u.`middlename`,u.`lastname`,s.`roomNumber`,s.`checkIn`,s.`checkOut` FROM `student` s LEFT JOIN `user` u ON u.`id` = s.`userId` LEFT JOIN `room` r ON  s.`hostel` = r.`hostel` LEFT JOIN `hostel` h ON r.`hostel` = h.`id` WHERE h.`id` = ? AND h.`deleted` = ? AND h.`orgId` = ? AND s.`checkIn` <= CURDATE() AND (s.`checkOut` IS NULL OR s.`checkOut` >= CURDATE())",
+            "SELECT u.`id`,u.`firstname`,u.`middelname`,u.`lastname`,s.`roomNumber`,s.`checkIn`,s.`checkOut` FROM `student` s LEFT JOIN `user` u ON u.`id` = s.`userId` LEFT JOIN `room` r ON  s.`hostel` = r.`hostel` LEFT JOIN `hostel` h ON r.`hostel` = h.`id` WHERE h.`id` = ? AND h.`deleted` = ? AND h.`orgId` = ? AND s.`checkIn` <= CURDATE() AND (s.`checkOut` IS NULL OR s.`checkOut` >= CURDATE())",
             [
                 id,
                 process?.env?.NOTDELETED,
