@@ -216,7 +216,7 @@ module.exports = {
     },
     getAllFaculty: (data, callback) => {
         pool.query(
-            "SELECT u.`id`,u.`firstname`,u.`middelname`,u.`lastname`,u.`email`,u.`mobile`,u.`profile`,f.`departmentId`,f.`designationId` FROM `user` AS u RIGHT JOIN `faculty` AS f ON f.`userId` = u.`id` WHERE u.`deleted` = ? AND u.`orgId` = ?",
+            "SELECT u.`id`,u.`firstname`,u.`middelname`,u.`lastname`,u.`email`,u.`mobile`,u.`profile`,f.`departmentId`,f.`designationId`,u.`dob` FROM `user` AS u RIGHT JOIN `faculty` AS f ON f.`userId` = u.`id` WHERE u.`deleted` = ? AND u.`orgId` = ?",
             [
                 process.env.NOTDELETED,
                 data?.orgId
