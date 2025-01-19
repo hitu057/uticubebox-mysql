@@ -46,7 +46,6 @@ module.exports = {
                                         })
                                     } else {
                                         if (result?.insertId) {
-                                            console.log(data)
                                             connection.query(
                                                 "INSERT INTO `student` (`userId`,`categoryId`,`fatherName`,`rollNumber`,`fatherMobile`,`motherName`,`motherMobile`,`parentEmail`,`hostel`,`guardianName`,`guardianMobile`,`roomNumber`,`checkIn`,`checkOut`,`meals`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                                                 [
