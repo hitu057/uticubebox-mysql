@@ -1,9 +1,9 @@
-const { createHostel, updateHostel } = require("./forgetPass.schema")
+const { sendOtp,verifyOtp,changePass } = require("./forgetPass.schema")
 
 module.exports = {
-    createHostelValidation: (req, res, next) => {
+    sendOtpValidation: (req, res, next) => {
         try {
-            const value = createHostel.validate(req?.body)
+            const value = sendOtp.validate(req?.body)
             if (value?.error) {
                 res.status(400).json({
                     success: false,
@@ -20,9 +20,9 @@ module.exports = {
             })
         }
     },
-    updateHostelValidation: (req, res, next) => {
+    verifyOtpValidation: (req, res, next) => {
         try {
-            const value = updateHostel.validate(req?.body)
+            const value = verifyOtp.validate(req?.body)
             if (value?.error) {
                 res.status(400).json({
                     success: false,
@@ -38,5 +38,24 @@ module.exports = {
                 message: "Something went wrong"
             })
         }
-    }
+    },
+    changePassValidation: (req, res, next) => {
+        try {
+            const value = changePass.validate(req?.body)
+            if (value?.error) {
+                res.status(400).json({
+                    success: false,
+                    message: value?.error?.details?.[0]?.message
+                })
+            }
+            else
+                next()
+        }
+        catch (err) {
+            res.status(500).json({
+                success: false,
+                message: "Something went wrong"
+            })
+        }
+    },
 }

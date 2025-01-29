@@ -1,8 +1,9 @@
 const router = require("express").Router()
-const { checkToken } = require("../../auth/token-validation")
-const { sendOtpValidation } = require("../../validation/forgetPass/forgetPass.validation")
-const { sendOtp } = require("./forgetPass.controller")
+const { sendOtpValidation,verifyOtpValidation,changePassValidation } = require("../../validation/forgetPass/forgetPass.validation")
+const { sendOtp,verifyOtp,changePass } = require("./forgetPass.controller")
 
-router.post("/sendOtp", checkToken, sendOtpValidation, sendOtp)
+router.post("/sendOtp", sendOtpValidation, sendOtp)
+router.post("/verifyOtp", verifyOtpValidation, verifyOtp)
+router.post("/changePass", changePassValidation, changePass)
 
 module.exports = router

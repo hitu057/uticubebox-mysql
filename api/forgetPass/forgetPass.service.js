@@ -9,7 +9,6 @@ module.exports = {
                 process.env.NOTDELETED
             ],
             (error, result) => {
-                console.log(result)
                 if (error)
                     return callback(error?.sqlMessage || "Error while finding a user")
                 if (result?.length === 0)
@@ -25,7 +24,50 @@ module.exports = {
                         if (error)
                             return callback(err?.sqlMessage || "Error while sending otp")
                         return callback(null, otp)
-                    })
+                    }
+                )
+            }
+        )
+    },
+    verifyOtp: (data, callback) => {
+        pool.query(
+            "SELECT `otp` FROM `user` WHERE `email` = ? AND `deleted` = ? AND `isOtpExpire` = ?",
+            [
+                data?.emailId,
+                process.env.NOTDELETED,
+                process.env.NOTDELETED
+            ],
+            (error, result) => {
+                if (error)
+                    return callback(error?.sqlMessage || "Error while finding a OTP")
+                if (result?.length === 0)
+                    return callback("OTP is expired")
+                if (result?.[0]?.otp != data?.otp)
+                    return callback("OTP didn't match")
+                pool.query(
+                    "UPDATE `user` SET `isOtpExpire` = ? WHERE email = ?",
+                    [
+                        process.env.DELETED,
+                        data?.emailId
+                    ],
+                    (err, res) => {
+                        if (error)
+                            return callback(err?.sqlMessage || "Error while validating an OTP")
+                        return callback(null, res)
+                    }
+                )
+            }
+        )
+    },
+    changePass: (data, callback) => {
+        pool.query(
+            "UPDATE `user` SET `password` = ? WHERE `email` = ?",
+            [
+                data?.password,
+                data?.emailId
+            ],
+            (error, result) => {
+                return error ? callback(error?.sqlMessage || "Error while changing a password") : callback(null, result)
             }
         )
     }
