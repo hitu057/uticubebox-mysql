@@ -15,9 +15,10 @@ module.exports = {
                     return callback("User not found")
                 const otp = Math.floor(100000 + Math.random() * 900000).toString();
                 pool.query(
-                    "UPDATE `user` SET `otp` = ? WHERE email = ?",
+                    "UPDATE `user` SET `otp` = ?, `isOtpExpire` = ? WHERE email = ?",
                     [
                         otp,
+                        process.env.NOTDELETED,
                         data?.emailId
                     ],
                     (err, res) => {
