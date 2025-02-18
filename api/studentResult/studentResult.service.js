@@ -15,5 +15,20 @@ module.exports = {
                 return error ? callback(error?.sqlMessage || 'Error while fetching student') : callback(null, result)
             }
         )
+    },
+    studentList: (data, callback) => {
+        pool.query(
+            "SELECT u.`id`, u.`firstname`,u.`middelname`,u.`lastname`,s.`rollNumber` FROM `user` u LEFT JOIN `student` AS s ON s.`userId` = u.`id` LEFT JOIN `batch` b ON b.`userId` = u.`id` WHERE u.`orgId` = ? AND b.`classId` = ? AND b.`semesterId` = ? AND b.`batchId` = ? AND u.`deleted` = ?",
+            [
+                data?.orgId,
+                data?.classId,
+                data?.semesterId,
+                data?.batchId,
+                process.env.NOTDELETED,
+            ],
+            (error, result) => {
+                return error ? callback(error?.sqlMessage || 'Error while fetching student') : callback(null, result)
+            }
+        )
     }
 }
