@@ -25,8 +25,10 @@ module.exports = {
                 process.env.NOTDELETED
             ],
             (error, result) => {
-                if (error)
+                if (error){
+                    console.log('error',error)
                     return callback(error?.sqlMessage || "Error while login")
+                }
                 else {
                     if (result.length) {
                         pool.query(
