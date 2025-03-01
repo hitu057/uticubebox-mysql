@@ -22,7 +22,7 @@ module.exports = {
     },
     updateCourse: (data, id, callback) => {
         pool.query(
-            "UPDATE `course` SET `title` = ?,`document` = ? `description` = ? ,`lab` = ? , `classId` = ? ,`semesterId` = ?,`departmentId` = ?, `updtBy` = ? WHERE `id` = ?",
+            "UPDATE `course` SET `title` = ?,`document` = ?, `description` = ? ,`lab` = ? , `classId` = ? ,`semesterId` = ?,`departmentId` = ?, `updtBy` = ? WHERE `id` = ?",
             [
                 data?.title,
                 data?.document,
