@@ -3,14 +3,16 @@ const pool = require("../../config/database")
 module.exports = {
     createCourse: (data, callback) => {
         pool.query(
-            "INSERT INTO `course` (`orgId`,`title`,`description`,`classId`,`semesterId`,`departmentId`,`crdtBy`) VALUES (?,?,?,?,?,?,?)",
+            "INSERT INTO `course` (`orgId`,`title`,`description`,`lab`,`classId`,`semesterId`,`departmentId`,`document`,`crdtBy`) VALUES (?,?,?,?,?,?,?,?,?)",
             [
                 data?.orgId,
                 data?.title,
                 data?.description,
+                data?.lab,
                 data?.classId,
                 data?.semesterId,
                 data?.departmentId,
+                data?.document,
                 data?.crdtBy
             ],
             (error, result) => {
@@ -20,10 +22,12 @@ module.exports = {
     },
     updateCourse: (data, id, callback) => {
         pool.query(
-            "UPDATE `course` SET `title` = ?, `description` = ? , `classId` = ? ,`semesterId` = ?,`departmentId` = ?, `updtBy` = ? WHERE `id` = ?",
+            "UPDATE `course` SET `title` = ?,`document` = ? `description` = ? ,`lab` = ? , `classId` = ? ,`semesterId` = ?,`departmentId` = ?, `updtBy` = ? WHERE `id` = ?",
             [
                 data?.title,
+                data?.document,
                 data?.description,
+                data?.lab,
                 data?.classId,
                 data?.semesterId,
                 data?.departmentId,
@@ -50,7 +54,7 @@ module.exports = {
     },
     getCourseById: (id, callback) => {
         pool.query(
-            "SELECT `id` , `title`, `description`, `classId`,`semesterId`,`departmentId` FROM `course` WHERE `deleted` = ? and `id` = ?",
+            "SELECT `id` , `title`,`document`, `description`,`lab`, `classId`,`semesterId`,`departmentId` FROM `course` WHERE `deleted` = ? and `id` = ?",
             [
                 process.env.NOTDELETED,
                 id
@@ -62,7 +66,7 @@ module.exports = {
     },
     getAllCourse: (data,callback) => {
         pool.query(
-            "SELECT `id` , `title`, `description`, `classId`,`semesterId`,`departmentId` FROM `course` WHERE `deleted` = ? AND `orgId` = ?",
+            "SELECT `id` , `title`,`document`, `description`,`lab`, `classId`,`semesterId`,`departmentId` FROM `course` WHERE `deleted` = ? AND `orgId` = ?",
             [
                 process.env.NOTDELETED,
                 data?.orgId

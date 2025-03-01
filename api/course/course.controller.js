@@ -4,6 +4,7 @@ module.exports = {
     createCourse: (req, res) => {
         const body = req?.body
         try {
+            body.document = req?.file?.filename || ''
             body.classId = decrypt(body?.classId)
             body.semesterId = decrypt(body?.semesterId)
             body.departmentId = decrypt(body?.departmentId)
@@ -106,7 +107,7 @@ module.exports = {
                     })
                 }
                 else {
-                    result = result.map(item => ({ ...item, id: encrypt(item?.id),classId:encrypt(item?.classId),departmentId:encrypt(item?.departmentId),semesterId:encrypt(item?.semesterId) }))
+                    result = result.map(item => ({ ...item, id: encrypt(item?.id),classId:encrypt(item?.classId),departmentId:encrypt(item?.departmentId),semesterId:encrypt(item?.semesterId),document: item?.document ? `${process.env.COURSEIMAGE}${item?.document}` : null }))
                     return res.status(200).json({
                         success: true,
                         message: result?.length ? "Data Found" : "No Data Found",
@@ -132,7 +133,7 @@ module.exports = {
                 })
             }
             else {
-                result = result.map(item => ({ ...item, id: encrypt(item?.id),classId:encrypt(item?.classId),departmentId:encrypt(item?.departmentId),semesterId:encrypt(item?.semesterId) }))
+                result = result.map(item => ({ ...item, id: encrypt(item?.id),classId:encrypt(item?.classId),departmentId:encrypt(item?.departmentId),semesterId:encrypt(item?.semesterId),document: item?.document ? `${process.env.COURSEIMAGE}${item?.document}` : null }))
                 return res.status(200).json({
                     success: true,
                     message: result?.length ? "Data Found" : "No Data Found",
