@@ -27,6 +27,6 @@ app.use("/result", require("./api/studentResult/studentResult.router"))
 app.use("/forgetPass", require("./api/forgetPass/forgetPass.router"))
 app.use("/course", require("./api/course/course.router"))
 
-app.listen(process.env.PORT, () => {
+app.listen(() => {
     console.log("server is running on PORT", process.env.PORT)
 })
