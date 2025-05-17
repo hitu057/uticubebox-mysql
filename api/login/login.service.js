@@ -44,7 +44,7 @@ module.exports = {
                             })
                     }
                     else
-                        return callback(error?.sqlMessage || "Error while login")
+                        return callback(error?.sqlMessage || "Email and password didn't matched")
                 }
             }
         )

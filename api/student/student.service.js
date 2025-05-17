@@ -1,5 +1,5 @@
 const pool = require("../../config/database")
-const { randomePassword } = require("../../enc_dec")
+const { randomePassword, encrypt } = require("../../enc_dec")
 const nodemailer = require("nodemailer")
 module.exports = {
     createStudent: (data, callback) => {
@@ -55,7 +55,7 @@ module.exports = {
                                     data?.middelname,
                                     data?.lastname,
                                     data?.email,
-                                    password,
+                                    encrypt(password),
                                     data?.mobile,
                                     data?.address,
                                     data?.gender,
@@ -173,13 +173,38 @@ module.exports = {
                                 return callback("Email or mobile already exists")
                             })
                         } else {
-                            const updateUserQuery = `UPDATE user SET firstname = ?, middelname = ?, lastname = ?, email = ?, ${data?.password ? 'password = ?,' : ''} mobile = ?, address = ?, gender = ?, dob = ?, updtBy = ? WHERE id = ?`
+                            let password = ""
+                            if(data?.isEmailUpdated){
+                                password = randomePassword()
+                                const mailOptions = {
+                                    from: process.env.EMAIL_USER,
+                                    to: data?.email,
+                                    subject: "Your Password",
+                                    text: `Your Email is ${data?.email} and your password is ${password}`
+                                }
+                                const transporter = nodemailer.createTransport({
+                                    service: "gmail",
+                                    auth: {
+                                        user: process.env.EMAIL_USER,
+                                        pass: process.env.EMAIL_PASS
+                                    }
+                                })
+                                transporter?.sendMail(mailOptions, (err, info) => {
+                                    if (err){
+                                        connection.rollback(() => {
+                                            connection.release()
+                                            return callback("Error while sending a mail")
+                                        })
+                                    }
+                                })
+                            }
+                            const updateUserQuery = `UPDATE user SET firstname = ?, middelname = ?, lastname = ?, email = ?, ${password ? 'password = ?,' : ''} mobile = ?, address = ?, gender = ?, dob = ?, updtBy = ? WHERE id = ?`
                             const updateUserParams = [
                                 data?.firstname,
                                 data?.middelname,
                                 data?.lastname,
                                 data?.email,
-                                ...(data?.password ? [data?.password] : []),
+                                ...(password ? [encrypt(password)] : []),
                                 data?.mobile,
                                 data?.address,
                                 data?.gender,

@@ -56,7 +56,8 @@ const schema = {
         roomNumber: joi.string().allow('').allow(null),
         batchId: joi.string().required(),
         classId: joi.string().required(),
-        semesterId: joi.string().required()
+        semesterId: joi.string().required(),
+        isEmailUpdated: joi.boolean().required()
     })
 }
 module.exports = schema

@@ -42,7 +42,6 @@ module.exports = {
                 body.batchId = decrypt(body?.batchId)
                 body.hostel = decrypt(body?.hostel)
                 body.roomNumber = decrypt(body?.roomNumber)
-                body.password = body?.password ? encrypt(body?.password) : ""
                 updateStudent(body, id, (err, result) => {
                     if (err) {
                         return res.status(500).json({
