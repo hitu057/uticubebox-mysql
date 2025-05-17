@@ -25,6 +25,7 @@ module.exports = {
                 process.env.NOTDELETED
             ],
             (error, result) => {
+                console.log('err',error)
                 if (error)
                     return callback(error?.sqlMessage || "Error while login")
                 else {
