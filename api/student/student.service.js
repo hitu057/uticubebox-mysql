@@ -1,4 +1,6 @@
 const pool = require("../../config/database")
+const { randomePassword } = require("../../enc_dec")
+const nodemailer = require("nodemailer")
 module.exports = {
     createStudent: (data, callback) => {
         pool.getConnection((err, connection) => {
@@ -23,6 +25,28 @@ module.exports = {
                                 return callback("Email or mobile already exists")
                             })
                         } else {
+                            const password = randomePassword()
+                            const mailOptions = {
+                                from: process.env.EMAIL_USER,
+                                to: data?.email,
+                                subject: "Your Password",
+                                text: `Your Email is ${data?.email} and your password is ${password}`
+                            }
+                            const transporter = nodemailer.createTransport({
+                                service: "gmail",
+                                auth: {
+                                    user: process.env.EMAIL_USER,
+                                    pass: process.env.EMAIL_PASS
+                                }
+                            })
+                            transporter?.sendMail(mailOptions, (err, info) => {
+                                if (err){
+                                     connection.rollback(() => {
+                                        connection.release()
+                                        return callback("Error while sending a mail")
+                                    })
+                                }
+                            })
                             connection.query(
                                 "INSERT INTO `user` (`orgId`,`firstname`,`middelname`,`lastname`,`email`,`password`,`mobile`,`address`,`gender`,`dob`,`crdtBy`) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
                                 [
@@ -31,7 +55,7 @@ module.exports = {
                                     data?.middelname,
                                     data?.lastname,
                                     data?.email,
-                                    data?.password,
+                                    password,
                                     data?.mobile,
                                     data?.address,
                                     data?.gender,

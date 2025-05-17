@@ -9,7 +9,6 @@ module.exports = {
             body.batchId = decrypt(body?.batchId)
             body.hostel = decrypt(body?.hostel)
             body.roomNumber = decrypt(body?.roomNumber)
-            body.password = encrypt(body?.password)
             body.classId = decrypt(body?.classId)
             body.semesterId = decrypt(body?.semesterId)
             createStudent(body, (err, result) => {

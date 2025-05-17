@@ -22,5 +22,14 @@ module.exports = {
         } catch (err) {
             return ''
         }
+    },
+    randomePassword: function(){
+        const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+";
+        let password = "";
+        for (let i = 0; i < 15; i++) {
+            const randomIndex = crypto.randomInt(0, charset.length);
+            password += charset?.[randomIndex];
+        }
+        return password;
     }
 }
