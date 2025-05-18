@@ -11,7 +11,7 @@ module.exports = {
             body.roleId = decrypt(body?.roleId)
             body.password = encrypt(body?.password)
             body.designationId = decrypt(body?.designationId)
-            const additionalRes = body?.designationId.split(',')
+            const additionalRes = body?.additionalResId.split(',')
             additionalResDecry = additionalRes.map(element => {
                 return decrypt(element)
             })
@@ -52,7 +52,7 @@ module.exports = {
                 body.designationId = decrypt(body?.designationId)
                 body.roleId = decrypt(body?.roleId)
                 body.password = body?.password ? encrypt(body?.password) : ""
-                const additionalRes = body?.designationId.split(',')
+                const additionalRes = body?.additionalResId.split(',')
                 additionalResDecry = additionalRes.map(element => {
                     return decrypt(element)
                 })
