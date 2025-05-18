@@ -4,13 +4,23 @@ module.exports = {
     createFaculty: (req, res) => {
         const body = req?.body
         try {
+            let additionalResDecry = []
+            let qualificationDecry = []
             body.gender = decrypt(body?.gender)
             body.departmentId = decrypt(body?.departmentId)
-            body.designationId = decrypt(body?.designationId)
-            body.qualificationId = decrypt(body?.qualificationId)
             body.roleId = decrypt(body?.roleId)
-            body.additionalResId = body?.additionalResId ? decrypt(body?.additionalResId) : null
             body.password = encrypt(body?.password)
+            body.designationId = decrypt(body?.designationId)
+            const additionalRes = body?.designationId.split(',')
+            additionalResDecry = additionalRes.map(element => {
+                return decrypt(element)
+            })
+            const qualification = body?.qualificationId.split(',')
+            qualificationDecry = qualification.map(element => {
+                return decrypt(element)
+            })
+            body.additionalResId = additionalResDecry.length > 0 ? additionalResDecry.join(',') : ''
+            body.qualificationId = qualificationDecry.length > 0 ? qualificationDecry.join(',') : ''
             createFaculty(body, (err, result) => {
                 if (err) {
                     return res.status(500).json({
@@ -35,13 +45,23 @@ module.exports = {
         const body = req?.body
         if (id) {
             try {
+                let additionalResDecry = []
+                let qualificationDecry = []
                 body.gender = decrypt(body?.gender)
                 body.departmentId = decrypt(body?.departmentId)
                 body.designationId = decrypt(body?.designationId)
-                body.qualificationId = decrypt(body?.qualificationId)
                 body.roleId = decrypt(body?.roleId)
-                body.additionalResId = body?.additionalResId ? decrypt(body?.additionalResId) : null
                 body.password = body?.password ? encrypt(body?.password) : ""
+                const additionalRes = body?.designationId.split(',')
+                additionalResDecry = additionalRes.map(element => {
+                    return decrypt(element)
+                })
+                const qualification = body?.qualificationId.split(',')
+                qualificationDecry = qualification.map(element => {
+                    return decrypt(element)
+                })
+                body.additionalResId = additionalResDecry.length > 0 ? additionalResDecry.join(',') : ''
+                body.qualificationId = qualificationDecry.length > 0 ? qualificationDecry.join(',') : ''
                 updateFaculty(body, id, (err, result) => {
                     if (err) {
                         return res.status(500).json({
@@ -114,7 +134,17 @@ module.exports = {
                     })
                 }
                 else {
-                    result = result.map(item => ({ ...item, id: encrypt(item?.id), roleId: encrypt(item?.roleId), additionalResId: encrypt(item?.additionalResId), qualificationId: encrypt(item?.qualificationId), designationId: encrypt(item?.designationId), departmentId: encrypt(item?.departmentId), gender: encrypt(item?.gender),profile: item?.profile ? `${process.env.USERIMAGE}${item?.profile}` : null }))
+                    result = result.map(item => ({ 
+                        ...item, 
+                        id: encrypt(item?.id), 
+                        roleId: encrypt(item?.roleId),
+                        additionalResId: item?.additionalResId?.split(',').map(item => encrypt(item)).join(','), 
+                        qualificationId: item?.qualificationId?.split(',').map(item => encrypt(item)).join(','), 
+                        designationId: encrypt(item?.designationId), 
+                        departmentId: encrypt(item?.departmentId), 
+                        gender: encrypt(item?.gender),
+                        profile: item?.profile ? `${process.env.USERIMAGE}${item?.profile}` : null 
+                    }))
                     return res.status(200).json({
                         success: true,
                         message: result?.length ? "Data Found" : "No Data Found",
