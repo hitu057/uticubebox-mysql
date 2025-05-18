@@ -134,6 +134,7 @@ module.exports = {
                     })
                 }
                 else {
+                    console.log(result)
                     result = result.map(item => ({ 
                         ...item, 
                         id: encrypt(item?.id), 
