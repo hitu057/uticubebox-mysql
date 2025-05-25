@@ -134,16 +134,16 @@ module.exports = {
                     })
                 }
                 else {
-                    result = result.map(item => ({ 
-                        ...item, 
-                        id: encrypt(item?.id), 
+                    result = result.map(item => ({
+                        ...item,
+                        id: encrypt(item?.id),
                         roleId: encrypt(item?.roleId),
-                        additionalResId: (item?.additionalResId)?.toString()?.split(',').map(item => encrypt(item)).join(','), 
-                        qualificationId: (item?.qualificationId)?.toString()?.split(',').map(item => encrypt(item)).join(','), 
-                        designationId: encrypt(item?.designationId), 
-                        departmentId: encrypt(item?.departmentId), 
+                        additionalResId: (item?.additionalResId)?.toString()?.split(',').map(item => encrypt(item)).join(','),
+                        qualificationId: (item?.qualificationId)?.toString()?.split(',').map(item => encrypt(item)).join(','),
+                        designationId: encrypt(item?.designationId),
+                        departmentId: encrypt(item?.departmentId),
                         gender: encrypt(item?.gender),
-                        profile: item?.profile ? `${process.env.USERIMAGE}${item?.profile}` : null 
+                        profile: item?.profile ? `${process.env.USERIMAGE}${item?.profile}` : null
                     }))
                     return res.status(200).json({
                         success: true,
@@ -170,7 +170,17 @@ module.exports = {
                 })
             }
             else {
-                result = result.map(item => ({ ...item, departmentId: encrypt(item?.departmentId), designationId: encrypt(item?.designationId), id: encrypt(item?.id), profile: item?.profile ? `${process.env.USERIMAGE}${item?.profile}` : null }))
+                result = result.map(item => ({
+                    ...item,
+                    id: encrypt(item?.id),
+                    roleId: encrypt(item?.roleId),
+                    additionalResId: (item?.additionalResId)?.toString()?.split(',').map(item => encrypt(item)).join(','),
+                    qualificationId: (item?.qualificationId)?.toString()?.split(',').map(item => encrypt(item)).join(','),
+                    designationId: encrypt(item?.designationId),
+                    departmentId: encrypt(item?.departmentId),
+                    gender: encrypt(item?.gender),
+                    profile: item?.profile ? `${process.env.USERIMAGE}${item?.profile}` : null
+                }))
                 return res.status(200).json({
                     success: true,
                     message: result?.length ? "Data Found" : "No Data Found",
