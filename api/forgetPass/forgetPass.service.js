@@ -30,6 +30,21 @@ module.exports = {
             }
         )
     },
+    sendOtpToEmail: (data, callback) => {
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        pool.query(
+            "INSERT INTO `studentVerification` (`otp`,`email`) VALUES (?,?)",
+            [
+                otp,
+                data?.emailId
+            ],
+            (err, res) => {
+                if (error)
+                    return callback(err?.sqlMessage || "Error while sending otp")
+                return callback(null, otp)
+            }
+        )
+    },
     verifyOtp: (data, callback) => {
         pool.query(
             "SELECT `otp` FROM `user` WHERE `email` = ? AND `deleted` = ? AND `isOtpExpire` = ?",
@@ -57,6 +72,21 @@ module.exports = {
                         return callback(null, res)
                     }
                 )
+            }
+        )
+    },
+    verifyOtpToEmail: (data, callback) => {
+        pool.query(
+            "SELECT `otp` FROM `studentVerification` WHERE `email` = ?",
+            [
+                data?.emailId
+            ],
+            (error, result) => {
+                if (error)
+                    return callback(error?.sqlMessage || "Error while finding a OTP")
+                if (result?.[0]?.otp != data?.otp)
+                    return callback("OTP didn't match")
+                return callback(null, result)
             }
         )
     },
