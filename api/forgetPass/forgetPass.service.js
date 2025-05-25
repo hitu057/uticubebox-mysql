@@ -41,7 +41,7 @@ module.exports = {
             (err, res) => {
                 if (err)
                     return callback(err?.sqlMessage || "Error while sending otp")
-                return callback(null, res)
+                return callback(null, otp)
             }
         )
     },
