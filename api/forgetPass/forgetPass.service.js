@@ -39,9 +39,9 @@ module.exports = {
                 data?.emailId
             ],
             (err, res) => {
-                if (error)
+                if (err)
                     return callback(err?.sqlMessage || "Error while sending otp")
-                return callback(null, otp)
+                return callback(null, res)
             }
         )
     },
