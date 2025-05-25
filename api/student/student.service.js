@@ -325,7 +325,7 @@ module.exports = {
     },
     getAllStudent: (data, callback) => {
         pool.query(
-            "SELECT u.`id`,u.`firstname`,u.`middelname`,u.`lastname`,u.`email`,u.`mobile`,u.`profile`,u.`dob` FROM `user` AS u RIGHT JOIN `student` AS s ON s.`userId` = u.`id` WHERE u.`deleted` = ? AND u.`orgId` = ?",
+            "SELECT u.`id`,u.`firstname`,u.`middelname`,u.`lastname`,u.`email`,u.`mobile`,u.`profile`,u.`address`,u.`gender`,u.`dob`,s.`categoryId`,s.`fatherName`,s.`rollNumber`,s.`fatherMobile`,s.`motherName`,s.`motherMobile`,s.`parentEmail`,s.`hostel`,s.`guardianName`,s.`guardianMobile`,s.`roomNumber`,b.`batchId`,b.`classId`,b.`semesterId`,u.`profile`,s.`checkIn`,s.`checkOut`,s.`meals` FROM `user` AS u RIGHT JOIN `student` AS s ON s.`userId` = u.`id` LEFT JOIN `batch` b ON b.`userId` = u.`id` WHERE u.`deleted` = ? AND u.`orgId` = ?",
             [
                 process.env.NOTDELETED,
                 data?.orgId
