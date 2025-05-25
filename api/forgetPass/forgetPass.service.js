@@ -77,7 +77,7 @@ module.exports = {
     },
     verifyOtpToEmail: (data, callback) => {
         pool.query(
-            "SELECT `otp` FROM `studentVerification` WHERE `email` = ?",
+            "SELECT `otp` FROM `studentVerification` WHERE `email` = ? ORDER BY `id` DESC LIMIT 1",
             [
                 data?.emailId
             ],
