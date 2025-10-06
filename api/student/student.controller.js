@@ -164,7 +164,7 @@ module.exports = {
                 else {
                     return res.status(200).json({
                         success: true,
-                        message: "Faculty image uploaded sucessfully"
+                        message: "Student image uploaded sucessfully"
                     })
                 }
             })
