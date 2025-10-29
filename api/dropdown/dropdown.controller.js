@@ -1,4 +1,4 @@
-const { createDropdown, updateDropdown, getAllDropdownByGroup, getAllDropdown, deleteDropdown, getDropdownById, getAllDropdownGroup,getStudentlist } = require("./dropdown.service")
+const { createDropdown, updateDropdown, getAllDropdownByGroup, getAllDropdown, deleteDropdown, getDropdownById, getAllDropdownGroup,getStudentlist, createDropdownGroup } = require("./dropdown.service")
 const { encrypt, decrypt } = require("../../enc_dec")
 module.exports = {
     createDropdown: (req, res) => {
@@ -15,6 +15,29 @@ module.exports = {
                 return res.status(200).json({
                     success: true,
                     message: "Dropdown Added Successfully"
+                })
+            })
+        } catch (error) {
+            return res.status(400).json({
+                success: false,
+                message: "Bad Request"
+            })
+        }
+    },
+    createDropdownGroup: (req, res) => {
+        const body = req?.body
+        try {
+            body.groupId = decrypt(body?.groupId)
+            createDropdownGroup(body, (err, result) => {
+                if (err) {
+                    return res.status(500).json({
+                        success: false,
+                        message: err
+                    })
+                }
+                return res.status(200).json({
+                    success: true,
+                    message: "Dropdown Group Added Successfully"
                 })
             })
         } catch (error) {

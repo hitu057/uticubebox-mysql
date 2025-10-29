@@ -6,6 +6,11 @@ const schema = {
         name: joi.string().required(),
         groupId: joi.string().required()
     }),
+    createDropdownGrp: joi.object({
+        orgId: joi.string().required(),
+        crdtBy: joi.string().required(),
+        name: joi.string().required()
+    }),
     updateDropdown: joi.object({
         orgId: joi.string().required(),
         crdtBy: joi.string().required(),

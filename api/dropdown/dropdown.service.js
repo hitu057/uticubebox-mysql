@@ -15,6 +15,19 @@ module.exports = {
             }
         )
     },
+    createDropdownGroup: (data, callback) => {
+        pool.query(
+            "INSERT INTO `dropdownGroup` (`orgId`,`name`,`crdtBy`) VALUES (?,?,?)",
+            [
+                data?.orgId,
+                data?.name,
+                data?.crdtBy
+            ],
+            (error, result) => {
+                return error ? callback(error?.sqlMessage || "Error while adding a dropdown group") : callback(null, result)
+            }
+        )
+    },
     updateDropdown: (data, id, callback) => {
         pool.query(
             "UPDATE `dropdown` SET `name` = ?, `groupId` = ? , `updtBy` = ? WHERE `id` = ?",

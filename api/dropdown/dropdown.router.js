@@ -1,9 +1,10 @@
-const { createDropdown, updateDropdown, getAllDropdownByGroup, getAllDropdown, deleteDropdown, getDropdownById, getAllDropdownGroup,getStudentlist } = require("./dropdown.controller")
+const { createDropdown,createDropdownGroup, updateDropdown, getAllDropdownByGroup, getAllDropdown, deleteDropdown, getDropdownById, getAllDropdownGroup,getStudentlist } = require("./dropdown.controller")
 const router = require("express").Router()
 const { checkToken } = require("../../auth/token-validation")
-const { createDropdownValidation, updateDropdownValidation,studentListValidation } = require("../../validation/dropdown/dropdown.validation")
+const { createDropdownValidation, updateDropdownValidation,studentListValidation,createDropdownGrpValidation } = require("../../validation/dropdown/dropdown.validation")
 
 router.post("/", checkToken, createDropdownValidation, createDropdown)
+router.post("/group", checkToken, createDropdownGrpValidation, createDropdownGroup)
 router.post("/studentList",checkToken,studentListValidation, getStudentlist)
 router.put("/:id",checkToken, updateDropdownValidation, updateDropdown)
 router.delete("/:id",checkToken, deleteDropdown)
