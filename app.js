@@ -2,7 +2,8 @@ require("dotenv").config()
 const cors = require('cors')
 const express = require("express")
 const app = express()
-app.use(express.json())
+app.use(express.json({ limit: '20mb' }))
+app.use(express.urlencoded({ limit: '20mb', extended: true }))
 app.use(cors({
     origin: '*'
 }))
