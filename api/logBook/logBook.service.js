@@ -78,13 +78,25 @@ module.exports = {
     },
     getAllLogBook: (data,callback) => {
         pool.query(
-            "SELECT `id`,`semesterId`,`classId`,`studentId`,`departmentId`,`logDate`,`rating`,`feedback` FROM `logBook` WHERE `deleted` =? AND `orgId` = ?",
+            "SELECT `semesterId`,`classId`,`studentId`,`departmentId`,`batchId` FROM `logBook` WHERE `deleted` =? AND `orgId` = ? GROUP BY `studentId`,`semesterId`,`classId`,`departmentId`,`batchId`",
             [
                 process.env.NOTDELETED,
                 data?.orgId
             ],
             (error, result) => {
                 return error ? callback(error?.sqlMessage || "Error while fetching a logBook") : callback(null, result)
+            }
+        )
+    },
+    getAllLogBookByStudent: (studentId,callback) => {
+        pool.query(
+            "SELECT `competency`,`activityName`,`logDate`,`activityAttempt`,`rating`,`facultyDecision`,`facultyInitialDate`,`feedback` FROM `logBook` WHERE `deleted` =? AND `studentId` = ? ",
+            [
+                process.env.NOTDELETED,
+                studentId
+            ],
+            (error, result) => {
+                return error ? callback(error?.sqlMessage || "Error while fetching a logBook by student id") : callback(null, result)
             }
         )
     }

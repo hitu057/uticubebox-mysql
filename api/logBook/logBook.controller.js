@@ -1,4 +1,4 @@
-const { createLogBook, updateLogBook, getAllLogBook, deleteLogBook, getLogBookById } = require("./logBook.service")
+const { createLogBook, updateLogBook, getAllLogBook, deleteLogBook, getLogBookById,getAllLogBookByStudent } = require("./logBook.service")
 const { encrypt, decrypt } = require("../../enc_dec")
 module.exports = {
     createLogBook: (req, res) => {
@@ -9,6 +9,7 @@ module.exports = {
             body.batchId = decrypt(body?.batchId)
             body.departmentId = decrypt(body?.departmentId)
             body.classId = decrypt(body?.classId)
+            body.competency = decrypt(body?.competency)
             createLogBook(body, (err, result) => {
                 if (err) {
                     return res.status(500).json({
@@ -38,6 +39,7 @@ module.exports = {
                 body.batchId = decrypt(body?.batchId)
                 body.departmentId = decrypt(body?.departmentId)
                 body.classId = decrypt(body?.classId)
+                body.competency = decrypt(body?.competency)
                 updateLogBook(body, id, (err, result) => {
                     if (err) {
                         return res.status(500).json({
@@ -110,7 +112,7 @@ module.exports = {
                     })
                 }
                 else {
-                    result = result.map(item => ({ ...item, id: encrypt(item?.id), semesterId: encrypt(item?.semesterId), classId: encrypt(item?.classId),studentId:encrypt(item?.studentId),batchId:encrypt(item?.batchId),departmentId:encrypt(item?.departmentId) }))
+                    result = result.map(item => ({ ...item, id: encrypt(item?.id),competency:encrypt(item?.competency), semesterId: encrypt(item?.semesterId), classId: encrypt(item?.classId),studentId:encrypt(item?.studentId),batchId:encrypt(item?.batchId),departmentId:encrypt(item?.departmentId) }))
                     return res.status(200).json({
                         success: true,
                         message: result?.length ? "Data Found" : "No Data Found",
@@ -136,7 +138,26 @@ module.exports = {
                 })
             }
             else {
-                result = result.map(item => ({ ...item, id: encrypt(item?.id), semesterId: encrypt(item?.semesterId), classId: encrypt(item?.classId),studentId:encrypt(item?.studentId),departmentId:encrypt(item?.departmentId) }))
+                result = result.map(item => ({ ...item, id: encrypt(item?.id),competency:encrypt(item?.competency), semesterId: encrypt(item?.semesterId), classId: encrypt(item?.classId),studentId:encrypt(item?.studentId),departmentId:encrypt(item?.departmentId) }))
+                return res.status(200).json({
+                    success: true,
+                    message: result?.length ? "Data Found" : "No Data Found",
+                    result: result
+                })
+            }
+        })
+    },
+    getAllLogBookByStudent: (req, res) => {
+        const studentId = decrypt(req?.params?.id)
+        getAllLogBookByStudent(studentId, (error, result) => {
+            if (error) {
+                return res.status(500).json({
+                    success: false,
+                    message: error
+                })
+            }
+            else {
+                result = result.map(item => ({ ...item, id: encrypt(item?.id),competency:encrypt(item?.competency), semesterId: encrypt(item?.semesterId), classId: encrypt(item?.classId),studentId:encrypt(item?.studentId),departmentId:encrypt(item?.departmentId) }))
                 return res.status(200).json({
                     success: true,
                     message: result?.length ? "Data Found" : "No Data Found",
