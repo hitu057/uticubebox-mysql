@@ -90,7 +90,7 @@ module.exports = {
     },
     getAllLogBookByStudent: (studentId,callback) => {
         pool.query(
-            "SELECT `competency`,`activityName`,`logDate`,`activityAttempt`,`rating`,`facultyDecision`,`facultyInitialDate`,`feedback` FROM `logBook` WHERE `deleted` =? AND `studentId` = ? ",
+            "SELECT `id`, `competency`,`activityName`,`logDate`,`activityAttempt`,`rating`,`facultyDecision`,`facultyInitialDate`,`feedback` FROM `logBook` WHERE `deleted` =? AND `studentId` = ? ",
             [
                 process.env.NOTDELETED,
                 studentId
